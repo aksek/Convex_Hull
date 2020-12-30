@@ -26,6 +26,5 @@ void Preprocessing::voxelize(vector<Point> &points, int d) {
         int voxel_z = (points[i].Z() / d) * d;
         voxelized_points.emplace(Point(voxel_x, voxel_y, voxel_z));
     }
-    // points.resize(voxelized_points.size());
     points.assign(voxelized_points.begin(), voxelized_points.end());
 }

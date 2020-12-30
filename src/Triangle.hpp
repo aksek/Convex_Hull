@@ -1,0 +1,21 @@
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
+
+#include<iostream>
+#include"Point.hpp"
+
+class Triangle {
+private:
+    int a, b, c;        // indeces of vertices in a vector of all points
+public:
+    Triangle();
+    Triangle(int a_index, int b_index, int c_index);
+    int A() const;
+    int B() const;
+    int C() const;
+    bool operator==(const Triangle &that) const;
+    struct hash;
+};
+std::ostream &operator<<(std::ostream &os, const Triangle &T);
+
+#endif //TRIANGLE_H

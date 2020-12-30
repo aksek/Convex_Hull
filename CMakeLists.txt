@@ -3,4 +3,4 @@ project(ConvexHull)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ConvexHull src/main.cpp src/Point.hpp src/Point.cpp src/preprocessing.hpp src/preprocessing.cpp)
+add_executable(ConvexHull src/main.cpp src/Point.hpp src/Point.cpp src/preprocessing.hpp src/preprocessing.cpp src/Triangle.hpp src/Triangle.cpp src/Vector.hpp src/Vector.cpp)
