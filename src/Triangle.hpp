@@ -14,8 +14,8 @@ public:
     int B() const;
     int C() const;
     bool operator==(const Triangle &that) const;
-    struct hash;
 };
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
+struct triangle_hash;
 
 #endif //TRIANGLE_H

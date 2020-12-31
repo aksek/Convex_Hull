@@ -20,7 +20,7 @@ std::ostream &operator<<(std::ostream &os, const Triangle &T) {
     return os << '(' << T.A() << ", " << T.B() << ", " << T.C() << ')';
 }
 
-struct Triangle::hash {
+struct triangle_hash {
     size_t operator()(const Triangle &T) const {
         boost::hash<std::vector<int> > vector_hash;
         vector<int> indices;
