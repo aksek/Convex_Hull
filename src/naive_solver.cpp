@@ -36,10 +36,27 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
                     } else if (normal.Z() > 0) {
                         if (points[i].under(normal.X(), normal.Y(), normal.Z(), k)) all_under = false;       // not all points are under the triangle
                         else all_over = false;     
-                    }  // else if sprowadza się do płaszczyzny                                     
+                    }  else {
+                        if (normal.Y() < 0) {
+                            if (points[i].under(normal.X(), normal.Y(), k)) all_over = false;
+                            else all_under = false;
+                        } else if (normal.Y() > 0) {
+                            if (points[i].under(normal.X(), normal.Y(), k)) all_under = false;
+                            else all_over = false;
+                        } else if (normal.X() < 0) {
+                            if (points[i].X() < points[A].X()) all_over = false;
+                            else all_under = false;
+                        } else if (normal.X() > 0) {
+                            if (points[i].X() < points[A].X()) all_under = false;
+                            else all_over = false;
+                        } else {
+                            all_under = false;
+                            all_over = false;
+                        }
+                    }                                    
                 }
                 if (all_under) convex_hull.push_back(Triangle(&points[A], &points[B], &points[C]));
-                if (all_over) convex_hull.push_back(Triangle(&points[A], &points[C], &points[B]));
+                else if (all_over) convex_hull.push_back(Triangle(&points[A], &points[C], &points[B]));
             }
         }
     }

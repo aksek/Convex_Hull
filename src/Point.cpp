@@ -10,7 +10,9 @@ int Point::Z() const {return z;}
 bool Point::under(int a, int b, int c, int d) {         // a b c d - coefficients of a plane
     return a * x + b * y + c * z * d < 0;
 }
-
+bool Point::under(int a, int b, int c) {                // a b c - line coefficients
+    return a * x + b * y + c < 0;
+}
 bool Point::operator==(const Point &that) const {
     if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
     else return true;
