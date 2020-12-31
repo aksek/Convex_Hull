@@ -5,7 +5,6 @@
 #include "Point.hpp"
 #include "Triangle.hpp"
 #include "preprocessing.hpp"
-#include "naive_solver.hpp"
 
 using namespace std;
 
@@ -22,9 +21,10 @@ int main() {
         cout << points[i] << endl;
     }
     cout << endl;
-    Naive_solver solver;
-    vector<Triangle> convex_hull = solver.solve(points);
-    for (int i = 0; i < convex_hull.size(); i++) {
-        cout << convex_hull[i].A() << convex_hull[i].B() << convex_hull[i].C() << endl;
-    }
+    // Naive_solver solver;
+    // vector<Triangle> convex_hull = solver.solve(points);
+    // for (int i = 0; i < convex_hull.size(); i++) {
+    //     cout << convex_hull[i].A() << convex_hull[i].B() << convex_hull[i].C() << endl;
+    // }
+    cout << Triangle(&points[0], &points[1], &points[2]) << endl;
 }
