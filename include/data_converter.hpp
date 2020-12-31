@@ -12,7 +12,8 @@ public:
     data_converter() = default;
     ~data_converter() = default;
 
-    std::vector<Point> load( std::string file_name );
+    std::vector<Point> load();
+    void save(std::vector<Point> data);
 };
 
 #endif

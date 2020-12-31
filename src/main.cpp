@@ -5,6 +5,7 @@
 #include "Point.hpp"
 #include "Triangle.hpp"
 #include "preprocessing.hpp"
+#include "data_converter.hpp"
 
 int main() {
     int d = 1;
@@ -14,6 +15,9 @@ int main() {
                             Point(0, 0, 8),
                             Point(-3, 0, 0),
                             Point(0, 0, 1)};
+
+    data_converter c;
+    c.save(c.load());
     if (d > 1) Preprocessing::voxelize(points, d);
     for (int i = 0; i < points.size(); i++) {
         std::cout << points[i] << std::endl;
