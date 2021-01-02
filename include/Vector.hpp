@@ -14,6 +14,8 @@ public:
     int Z() const;
     bool operator==(const Vector &that) const;
     Vector operator*(const Vector &that) const;     //cross product
+    int dot(const Vector &that) const;        //dot product
+
 };
 std::ostream &operator<<(std::ostream &os, const Vector &P);
 

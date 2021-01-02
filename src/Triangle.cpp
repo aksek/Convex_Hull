@@ -6,36 +6,30 @@
 
 using namespace std;
 
-Triangle::Triangle(Point *a_pointer, Point *b_pointer, Point *c_pointer) {
-    a = a_pointer;
-    b = b_pointer;
-    c = c_pointer;
+Triangle::Triangle(int a_index, int b_index, int c_index) {
+    a = a_index;
+    b = b_index;
+    c = c_index;
 }
-Point* Triangle::A() const {return a;}
-Point* Triangle::B() const {return b;}
-Point* Triangle::C() const {return c;}
+int Triangle::A() const {return a;}
+int Triangle::B() const {return b;}
+int Triangle::C() const {return c;}
 
 bool Triangle::operator==(const Triangle &that) const {
     if (this->a != that.A() || this->b != that.B() || this->c != that.C() ) return false;
     else return true;
 }
 std::ostream &operator<<(std::ostream &os, const Triangle &T) {
-    return os << '(' << *T.A() << ", " << *T.B() << ", " << *T.C() << ')';
+    return os << '(' << T.A() << ", " << T.B() << ", " << T.C() << ')';
 }
 
 struct triangle_hash {
     size_t operator()(const Triangle &T) const {
         boost::hash<std::vector<int> > vector_hash;
         vector<int> indices;
-        indices.push_back(T.A()->X());
-        indices.push_back(T.A()->Y());
-        indices.push_back(T.A()->Z());
-        indices.push_back(T.B()->X());
-        indices.push_back(T.B()->Y());
-        indices.push_back(T.B()->Z());
-        indices.push_back(T.C()->X());
-        indices.push_back(T.C()->Y());
-        indices.push_back(T.C()->Z());
+        indices.push_back(T.A());
+        indices.push_back(T.B());
+        indices.push_back(T.C());
         return vector_hash(indices);
     }
 };
