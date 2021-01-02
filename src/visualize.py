@@ -22,7 +22,8 @@ trace2 = go.Mesh3d(
      	intensitymode='cell',
      	showscale=False,
      	hoverinfo= 'skip',
-     	showlegend = True
+     	showlegend = True,
+		name = 'convex hull'
 	)
 	
 data = [trace1, trace2]
