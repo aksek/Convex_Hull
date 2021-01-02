@@ -18,6 +18,7 @@ public:
     bool over(Plane &plane);
     bool on(Plane &plane);
     bool inside(Point *A, Point *B, Point *C, Plane &plane);
+
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
 };

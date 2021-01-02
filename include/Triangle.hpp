@@ -12,6 +12,7 @@ public:
     int A() const;
     int B() const;
     int C() const;
+
     bool operator==(const Triangle &that) const;
 };
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
