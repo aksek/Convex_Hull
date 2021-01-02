@@ -9,13 +9,13 @@ int Point::X() const {return x;}
 int Point::Y() const {return y;}
 int Point::Z() const {return z;}
 
-bool Point::under(Plane &plane) {         // a b c d - coefficients of a plane
+bool Point::under(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
 }
-bool Point::over(Plane &plane) {         // a b c d - coefficients of a plane
+bool Point::over(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
 }
-bool Point::on(Plane &plane) {         // a b c d - coefficients of a plane
+bool Point::on(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() == 0;
 }
 bool Point::operator==(const Point &that) const {

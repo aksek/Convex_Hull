@@ -8,7 +8,6 @@
 
 class Naive_solver {
 public:
-    // Naive_solver();
     std::vector<Triangle> solve(std::vector<Point> &points);
 };
 
