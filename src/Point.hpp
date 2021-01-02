@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include"Vector.hpp"
+#include"Plane.hpp"
 
 class Point{
 private:
@@ -13,10 +14,10 @@ public:
     int X() const;
     int Y() const;
     int Z() const;
-    bool under(int a, int b, int c, int d);
-    bool over(int a, int b, int c, int d);
-    bool under(int a, int b, int c);
-    bool over(int a, int b, int c);
+    bool under(Plane &plane);
+    bool over(Plane &plane);
+    bool on(Plane &plane);
+    bool inside(Point *A, Point *B, Point *C, Plane &plane);
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
 };

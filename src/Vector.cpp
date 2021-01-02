@@ -12,6 +12,12 @@ Vector Vector::operator*(const Vector &that) const {
     int w = this->x * that.Y() - this->y * that.X();
     return Vector(u, v, w);
 }  
+int Vector::dot(const Vector &that) const {
+    int u = this->x * that.X();
+    int v = this->y * that.Y();
+    int w = this->z * that.Z();
+    return u + v + w;
+}
 bool Vector::operator==(const Vector &that) const {
     if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
     else return true;
