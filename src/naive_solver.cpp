@@ -55,8 +55,8 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
                         }
                     }                                    
                 }
-                if (all_under) convex_hull.push_back(Triangle(&points[A], &points[B], &points[C]));
-                else if (all_over) convex_hull.push_back(Triangle(&points[A], &points[C], &points[B]));
+                if (all_under) convex_hull.push_back(Triangle(A, B, C));
+                else if (all_over) convex_hull.push_back(Triangle(A, C, B));
             }
         }
     }

@@ -8,7 +8,7 @@ int Point::Y() const {return y;}
 int Point::Z() const {return z;}
 
 bool Point::under(int a, int b, int c, int d) {         // a b c d - coefficients of a plane
-    return a * x + b * y + c * z * d < 0;
+    return a * x + b * y + c * z + d < 0;
 }
 bool Point::under(int a, int b, int c) {                // a b c - line coefficients
     return a * x + b * y + c < 0;
