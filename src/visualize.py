@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 
-df = pd.read_csv('../data/output.txt')
+df = pd.read_csv('./data/output.txt')
 
 trace1 = go.Scatter3d(
 	
@@ -17,8 +17,8 @@ trace2 = go.Mesh3d(
 	x=df.x, y=df.y, z=df.z,
 	i=df.i, j=df.j, k=df.k,
      	opacity=1,
-     	colorscale='agsunset',
-     	intensity = np.linspace(0, 1, len(df.x), endpoint=True),
+     	colorscale='jet',
+     	intensity = df.z,
      	intensitymode='cell',
      	showscale=False,
      	hoverinfo= 'skip',
