@@ -41,20 +41,20 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
                     if (normal.Z() < 0) {
                         if (points[i].under(plane)) all_over = false;       // not all points are over the triangle
                         else if (points[i].over(plane)) all_under = false;                                                            // not all points are under the triangle
-                    } else if (plane.C() > 0) {
+                    } else if (normal.Z() > 0) {
                         if (points[i].under(plane)) all_under = false;       // not all points are under the triangle
                         else if (points[i].over(plane)) all_over = false;     
                     }  else {
-                        if (plane.B() < 0) {
+                        if (normal.Y() < 0) {
                             if (points[i].under(plane)) all_over = false;
                             else if (points[i].over(plane)) all_under = false;
-                        } else if (plane.B() > 0) {
+                        } else if (normal.Y() > 0) {
                             if (points[i].under(plane)) all_under = false;
                             else if (points[i].over(plane)) all_over = false;
-                        } else if (plane.A() < 0) {
+                        } else if (normal.X() < 0) {
                             if (points[i].X() < points[A].X()) all_over = false;
                             else if (points[i].X() > points[A].X()) all_under = false;
-                        } else if (plane.A() > 0) {
+                        } else if (normal.X() > 0) {
                             if (points[i].X() < points[A].X()) all_under = false;
                             else if (points[i].X() > points[A].X()) all_over = false;
                         } else {
