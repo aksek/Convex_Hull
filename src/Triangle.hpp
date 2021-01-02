@@ -6,12 +6,12 @@
 
 class Triangle {
 private:
-    Point *a, *b, *c;        // pointers to Points
+    int a, b, c;        // pointers to Points
 public:
-    Triangle(Point *a_pointer, Point *b_pointer, Point *c_pointer);
-    Point* A() const;
-    Point* B() const;
-    Point* C() const;
+    Triangle(int a_index, int b_index, int c_index);
+    int A() const;
+    int B() const;
+    int C() const;
     bool operator==(const Triangle &that) const;
 };
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
