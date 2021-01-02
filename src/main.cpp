@@ -26,5 +26,5 @@ int main() {
     // for (int i = 0; i < convex_hull.size(); i++) {
     //     cout << convex_hull[i].A() << convex_hull[i].B() << convex_hull[i].C() << endl;
     // }
-    cout << Triangle(&points[0], &points[1], &points[2]) << endl;
+    cout << Triangle(1, 2, 3) << endl;
 }
