@@ -1,27 +1,50 @@
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
+import pandas as pd
 
-pts1 = np.loadtxt(np.DataSource().open('../data/input.txt'))
-x1, y1, z1 = pts1.T
+df = pd.read_csv('../data/output.txt')
 
-pts2 = np.loadtxt(np.DataSource().open('../data/output.txt'))
-x2, y2, z2 = pts2.T
+trace1 = go.Scatter3d(
+	
+	x=df.x, y=df.y, z=df.z, 
+    	mode='markers',
+    	name = 'input points'
+	)
+	
+trace2 = go.Mesh3d(
 
-fig = make_subplots(rows=2, cols=2, specs=[[{'type': 'scene'} ,{'type': 'scene'}], [{'type': 'scene'} ,{'type': 'scene'}]], subplot_titles=('input','output'))
+	x=df.x, y=df.y, z=df.z,
+	i=df.i, j=df.j, k=df.k,
+     	opacity=1,
+     	colorscale='agsunset',
+     	intensity = np.linspace(0, 1, len(df.x), endpoint=True),
+     	intensitymode='cell',
+     	showscale=False,
+     	hoverinfo= 'skip',
+     	showlegend = True
+	)
+	
+data = [trace1, trace2]
 
-fig.add_traces(
-    [go.Scatter3d(x=x1, y=y1, z=z1, mode='markers', name = 'input points'),
-     go.Mesh3d(x=x1, y=y1, z=z1, alphahull=0, opacity=0.8, colorscale=[[0, 'gold'], [0.5, 'mediumturquoise'], [1, 'magenta']], intensity = np.linspace(0, 1, 8, endpoint=True), intensitymode='cell', showscale=False, hoverinfo= 'skip'),
-     go.Scatter3d(x=x2, y=y2, z=z2, mode='markers', name = 'output vertices'),
-     go.Mesh3d(x=x2, y=y2, z=z2, alphahull=0, opacity=0.8, colorscale=[[0, 'gold'], [0.5, 'mediumturquoise'], [1, 'magenta']], intensity = np.linspace(0, 1, 8, endpoint=True), intensitymode='cell', showscale=False, hoverinfo= 'skip'),
-     go.Mesh3d(x=x1, y=y1, z=z1, alphahull=0, opacity=1, colorscale=[[0, 'gold'], [0.5, 'mediumturquoise'], [1, 'magenta']], intensity = np.linspace(0, 1, 8, endpoint=True), intensitymode='cell', showscale=False, hoverinfo= 'skip'),
-     go.Mesh3d(x=x2, y=y2, z=z2, alphahull=0, opacity=1, colorscale=[[0, 'gold'], [0.5, 'mediumturquoise'], [1, 'magenta']], intensity = np.linspace(0, 1, 8, endpoint=True), intensitymode='cell', showscale=False, hoverinfo= 'skip')],
-    rows=[1, 1, 1, 1, 2, 2],
-    cols=[1, 1, 2, 2, 1, 2])
+layout = go.Layout(
+	title= dict(
+		text = 'convex hull', 
+		x = 0.5
+	),
+	titlefont=dict(
+		family='Courier New, monospace',
+		size=15,
+		color='#7f7f7f'
+	),
+	paper_bgcolor='rgba(0,0,0,0)',
+	plot_bgcolor='rgba(0,0,0,0)',
+	scene = dict(
+		xaxis_showspikes=False,
+		yaxis_showspikes=False,
+		zaxis_showspikes=False
+	)
+)
 
-fig.update_scenes(xaxis_showspikes=False,
-                  yaxis_showspikes=False,
-                  zaxis_showspikes=False)
-                             
+fig = go.Figure(data=data, layout=layout)
 fig.show()
