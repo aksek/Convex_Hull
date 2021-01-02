@@ -23,7 +23,7 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
             for (int C = B + 1; C < points.size(); C++) {
 
                 AC = points[C] - points[A];
-                normal = AC * AB;                    // coordinates of the normal vector == coefficients of the plane
+                normal = AB * AC;                    // coordinates of the normal vector == coefficients of the plane
                 k = -(normal.X() * points[A].X() + normal.Y() * points[A].Y() + normal.Z() * points[A].Z()); //last coefficient
 
                 all_under = true, all_over = true;
@@ -32,23 +32,23 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
 
                     if (normal.Z() < 0) {
                         if (points[i].under(normal.X(), normal.Y(), normal.Z(), k)) all_over = false;       // not all points are over the triangle
-                        else all_under = false;                                                            // not all points are under the triangle
+                        else if (points[i].over(normal.X(), normal.Y(), normal.Z(), k)) all_under = false;                                                            // not all points are under the triangle
                     } else if (normal.Z() > 0) {
                         if (points[i].under(normal.X(), normal.Y(), normal.Z(), k)) all_under = false;       // not all points are under the triangle
-                        else all_over = false;     
+                        else if (points[i].over(normal.X(), normal.Y(), normal.Z(), k)) all_over = false;     
                     }  else {
                         if (normal.Y() < 0) {
                             if (points[i].under(normal.X(), normal.Y(), k)) all_over = false;
-                            else all_under = false;
+                            else if (points[i].over(normal.X(), normal.Y(), k)) all_under = false;
                         } else if (normal.Y() > 0) {
                             if (points[i].under(normal.X(), normal.Y(), k)) all_under = false;
-                            else all_over = false;
+                            else if (points[i].over(normal.X(), normal.Y(), k)) all_over = false;
                         } else if (normal.X() < 0) {
                             if (points[i].X() < points[A].X()) all_over = false;
-                            else all_under = false;
+                            else if (points[i].X() > points[A].X()) all_under = false;
                         } else if (normal.X() > 0) {
                             if (points[i].X() < points[A].X()) all_under = false;
-                            else all_over = false;
+                            else if (points[i].X() > points[A].X()) all_over = false;
                         } else {
                             all_under = false;
                             all_over = false;

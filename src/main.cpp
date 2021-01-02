@@ -16,7 +16,7 @@ int main() {
                             Point(3, -2, 0),
                             Point(0, 0, 8),
                             Point(-3, 0, 0),
-                            Point(0, 0, 1)};
+                            Point(0, 0, 0)};
     if (d > 1) Preprocessing::voxelize(points, d);
     for (int i = 0; i < points.size(); i++) {
         cout << points[i] << endl;

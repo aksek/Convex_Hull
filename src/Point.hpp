@@ -14,7 +14,9 @@ public:
     int Y() const;
     int Z() const;
     bool under(int a, int b, int c, int d);
+    bool over(int a, int b, int c, int d);
     bool under(int a, int b, int c);
+    bool over(int a, int b, int c);
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
 };
