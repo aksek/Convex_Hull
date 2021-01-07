@@ -2,6 +2,7 @@
 
 #include"Plane.hpp"
 #include"Vector.hpp"
+#include"Point.hpp"
 
 Plane::Plane() {
     Plane(0, 0, 0, 0);
@@ -31,7 +32,7 @@ int Plane::C() const {
 int Plane::D() const {
     return d;
 }
-double Plane::distance(Point &P) {
+double Plane::distance(const Point &P) const {
     int numerator = abs(a * P.X() + b * P.Y() + c * P.Z() + d);
     double denominator = sqrt(a * a + b * b + c * c);
     return (double)numerator / denominator;

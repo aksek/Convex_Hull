@@ -1,4 +1,7 @@
+#include<math.h>
+
 #include"Vector.hpp"
+
 
 Vector::Vector() : x{0}, y{0}, z{0} {}
 Vector::Vector(int x_coordinate, int y_coordinate, int z_coordinate) : x{x_coordinate}, y{y_coordinate}, z{z_coordinate} {}
@@ -17,6 +20,9 @@ int Vector::dot(const Vector &that) const {
     int v = this->y * that.Y();
     int w = this->z * that.Z();
     return u + v + w;
+}
+double Vector::length() {
+    return sqrt(x * x + y * y + z * z);
 }
 bool Vector::operator==(const Vector &that) const {
     if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;

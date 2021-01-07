@@ -19,6 +19,9 @@ bool Triangle::operator==(const Triangle &that) const {
     if (this->a != that.A() || this->b != that.B() || this->c != that.C() ) return false;
     else return true;
 }
+bool operator<(const Triangle &l, const Triangle &r) {      // completely arbitrary, exists for std::list<Triangle>'s sake
+    return l.A() < r.A();
+}
 std::ostream &operator<<(std::ostream &os, const Triangle &T) {
     return os << '(' << T.A() << ", " << T.B() << ", " << T.C() << ')';
 }

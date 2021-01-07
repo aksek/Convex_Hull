@@ -2,12 +2,38 @@
 
 #include"Point.hpp"
 #include"Vector.hpp"
+#include"Plane.hpp"
 
 Point::Point() : x{0}, y{0}, z{0} {}
 Point::Point(int x_coordinate, int y_coordinate, int z_coordinate) : x{x_coordinate}, y{y_coordinate}, z{z_coordinate} {}
 int Point::X() const {return x;}
 int Point::Y() const {return y;}
 int Point::Z() const {return z;}
+
+bool Point::on_outer_side(Point A, Point B, Point C) {
+    Plane plane(A, B, C);
+    Vector AB = B - A;
+    Vector AC = C - A;
+    Vector normal = AC * AB;        //points outwards
+    if(normal.Z() > 0) {
+        if (this->over(plane)) return true;
+    } else if (normal.Z() < 0) {
+        if (this->under(plane)) return true;
+    } else {        // Z == 0 => the triangle is vertical and the plane is treated as a line 
+        if (normal.Y() > 0) {
+            if (this->over(plane)) return true;
+        } else if (normal.Y() < 0) {
+            if (this->under(plane)) return true;
+        } else {    // Y == 0 => the triangle is perpendicular to the X axis
+            if (normal.X() > 0) {
+                if (this->X() > A.X()) return true;
+            } else if (normal.X() < 0) {
+                if (this->X() < A.X()) return true;
+            }
+        }
+    }
+    return false;
+}
 
 bool Point::under(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
