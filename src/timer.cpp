@@ -2,7 +2,7 @@
 
 void timer::measure_time(int x_number, int min_point_number, int max_point_number) {
 
-    int step = (max_point_number - min_point_number) / x_number;
+    int step = (max_point_number - min_point_number) / (x_number - 1);
     Naive_solver naive;
     data_generator g;
     data_converter c;
@@ -27,7 +27,7 @@ void timer::measure_time(int x_number, int min_point_number, int max_point_numbe
         naive.solve(points);
 
         auto end = std::chrono::system_clock::now();
-        
+
         std::time_t time2 = std::chrono::system_clock::to_time_t( start );
         std::time_t time1 = std::chrono::system_clock::to_time_t( end );
         auto seconds = time1 - time2;
