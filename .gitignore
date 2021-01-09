@@ -8,3 +8,6 @@ CMakeLists.txt
 .vscode/.easycpp
 bin/main
 CMakeLists.txt
+data/input.txt
+data/output.txt
+data/time_data.txt
