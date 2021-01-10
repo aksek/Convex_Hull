@@ -33,3 +33,35 @@ struct triangle_hash {
         return vector_hash(indices);
     }
 };
+
+Vector Triangle::normal(std::vector<Point> &points) { 
+
+    Vector temp1 = points[this->C()] - points[this->A()];
+    Vector temp2 = points[this->B()] - points[this->A()];
+    
+    return temp1 * temp2;
+    
+}
+
+std::vector<Edge> Triangle::edges(std::vector<Point> &points) {
+
+    Edge temp;
+    std::vector<Edge> edges;
+
+    temp.setStart(points[this->a]);
+    temp.setDirection(points[this->b] - points[this->a]);
+
+    edges.push_back(temp);
+
+    temp.setStart(points[this->b]);
+    temp.setDirection(points[this->c] - points[this->b]);
+
+    edges.push_back(temp);
+
+    temp.setStart(points[this->c]);
+    temp.setDirection(points[this->a] - points[this->c]);
+
+    edges.push_back(temp);
+    
+    return edges;
+}

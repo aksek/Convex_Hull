@@ -25,3 +25,10 @@ bool Vector::operator==(const Vector &that) const {
 std::ostream &operator<<(std::ostream &os, const Vector &V) {
     return os << '(' << V.X() << ", " << V.Y() << ", " << V.Z() << ')';
 }
+
+double Vector::magnitude() {
+
+    double temp = this->x * this->x + this->y * this->y + this->z * this->z;
+    
+    return sqrt(temp);
+}

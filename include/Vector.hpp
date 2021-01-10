@@ -2,6 +2,7 @@
 #define VECTOR_H
 
 #include<iostream>
+#include <math.h>
 
 class Vector{
 private:
@@ -15,6 +16,7 @@ public:
     bool operator==(const Vector &that) const;
     Vector operator*(const Vector &that) const;     //cross product
     int dot(const Vector &that) const;        //dot product
+    double magnitude();
 
 };
 std::ostream &operator<<(std::ostream &os, const Vector &P);
