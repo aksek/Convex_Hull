@@ -2,8 +2,10 @@
 #define POINT_H
 
 #include<iostream>
-#include"Vector.hpp"
-#include"Plane.hpp"
+// #include"Vector.hpp"
+// #include"Plane.hpp"
+class Vector;
+class Plane;
 
 class Point{
 private:
@@ -14,6 +16,7 @@ public:
     int X() const;
     int Y() const;
     int Z() const;
+    bool on_outer_side(Point A, Point B, Point C);   //A, B, C represent a triangle, whose outer side is the one where the points are seen in this order clockwise
     bool under(Plane &plane);
     bool over(Plane &plane);
     bool on(Plane &plane);
