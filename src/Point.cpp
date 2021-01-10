@@ -36,10 +36,10 @@ bool Point::on_outer_side(Point A, Point B, Point C) {
 }
 
 bool Point::under(Plane &plane) {
-    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
+    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
 }
 bool Point::over(Plane &plane) {
-    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
+    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
 }
 bool Point::on(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() == 0;

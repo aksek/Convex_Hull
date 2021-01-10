@@ -1,8 +1,6 @@
 #include<vector>
 #include<unordered_map>
 
-#include<boost/functional/hash.hpp>
-
 #include"quickhull_solver.hpp"
 #include"Triangle.hpp"
 #include"Point.hpp"
@@ -14,7 +12,7 @@ using namespace std;
 struct point_hash {
     size_t operator()(const Point &P) const {
         boost::hash<std::vector<int> > vector_hash;
-        vector<int> coors;
+        std::vector<int> coors;
         coors.push_back(P.X());
         coors.push_back(P.Y());
         coors.push_back(P.Z());
@@ -22,14 +20,18 @@ struct point_hash {
     }
 };
 
-list<Triangle> quickhull(int A, int B, int C, vector<Point> &points, unordered_map<Point, int, point_hash> &remaining) {
+list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &points, unordered_map<Point, int, point_hash> &remaining) {
+    int remaining_size = remaining.size();
     list<Triangle> convex_hull;
 
     // 3.1. Jeżeli P jest pusty - koniec
-    if (points.empty()) return convex_hull;
+    if (remaining.empty()) {
+        convex_hull.push_back(Triangle(A, B, C));
+        return convex_hull;
+    }
 
     // 3.2. Jeżeli P ma jeden element, ten punkt należy do otoczki - koniec
-    if (points.size() == 1) {
+    if (remaining.size() == 1) {
         convex_hull.push_back(Triangle(A, B,(remaining.begin())->second));
         convex_hull.push_back(Triangle(B, C,(remaining.begin())->second));
         convex_hull.push_back(Triangle(C, A,(remaining.begin())->second));
@@ -56,31 +58,31 @@ list<Triangle> quickhull(int A, int B, int C, vector<Point> &points, unordered_m
     Point P;
     for (auto it = remaining.begin(); it != remaining.end(); it++) {
         P = it->first;
-        if ((P).on_outer_side(points[A], points[B], D)) S_ABD.insert(*it);
-        else if ((P).on_outer_side(points[B], points[C], D)) S_BCD.insert(*it);
-        else if ((P).on_outer_side(points[C], points[A], D)) S_CAD.insert(*it);
-    }
-    // 3.6. Wywołać rekurencyjnie quickhull(A, B, D, S1), quickhull(B, C, D, S2), quickhull(C, A, D, S3)
+        if (P.on_outer_side(points[A], points[B], D)) S_ABD.insert(*it);
+        else if (P.on_outer_side(points[B], points[C], D)) S_BCD.insert(*it);
+        else if (P.on_outer_side(points[C], points[A], D)) S_CAD.insert(*it);
+
+   // 3.6. Wywołać rekurencyjnie quickhull(A, B, D, S1), quickhull(B, C, D, S2), quickhull(C, A, D, S3)
     convex_hull.merge(quickhull(A, B, maxIndex, points, S_ABD));
     convex_hull.merge(quickhull(B, C, maxIndex, points, S_BCD));
     convex_hull.merge(quickhull(C, A, maxIndex, points, S_CAD));
     return convex_hull;
 }
 
-vector<Triangle> solve(vector<Point> &points) {
+vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
     // 1. Znaleźć w zbiorze punktów 3 punkty skrajne
     int max_index_x = 0, min_index_x = 0;
-    int max_x = INT_MAX, min_x = INT_MIN;
-    unordered_map<Point, int, point_hash> remaining;
+    int max_x = INT_MIN, min_x = INT_MAX;
+    int current_x;
     for (int i = 0; i < points.size(); i++) {
         Point cur = points[i];
-        remaining.emplace(cur, i);
-        if (cur.X() > max_x) {
-            max_x = cur.X();
+        current_x = cur.X();
+        if (current_x > max_x) {
+            max_x = current_x;
             max_index_x = i;
         }
-        if (cur.X() < min_x) {
-            min_x = cur.X();
+        if (current_x < min_x) {
+            min_x = current_x;
             min_index_x = i;
         }
     }
@@ -95,11 +97,12 @@ vector<Triangle> solve(vector<Point> &points) {
         distance_denominator = (max_x_point - min_x_point).length();
         distance = distance_numerator / distance_denominator;
         if (distance > max_distance) {
-            max_distance = 0;
+            max_distance = distance;
             max_dist_index = i;
         }
     }
     Point max_dist_point = points[max_dist_index];
+
     // 2. Podzielić zbiór na dwa podzbiory S1 i S2, znajdujące się nad i pod płaszczyzną ABC
     Plane max_plane(max_x_point, min_x_point, max_dist_point);
     unordered_map<Point, int, point_hash> upper, lower;
@@ -107,6 +110,8 @@ vector<Triangle> solve(vector<Point> &points) {
         if (points[i].over(max_plane)) upper.emplace(points[i], i);
         else if (points[i].under(max_plane)) lower.emplace(points[i], i);
     }
+    int upper_size = upper.size();
+    int lower_size = lower.size();
     // 3. Wywołać quickhull(A, B, C, S1) i quickhull(C, B, A, S2) (argumenty: A, B, C, P)
     list<Triangle> convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, upper);
     convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, lower));

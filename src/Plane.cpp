@@ -18,7 +18,11 @@ Plane::Plane(Point &A, Point &B, Point &C) {
     Vector AC = C - A;
     Vector normal = AB * AC;                    // coordinates of the normal vector == coefficients of the plane
     int k = -(normal.X() * A.X() + normal.Y() * A.Y() + normal.Z() * A.Z()); //last coefficient
-    Plane(normal.X(), normal.Y(), normal.Z(), k);
+    // Plane(normal.X(), normal.Y(), normal.Z(), k);
+    a = normal.X();
+    b = normal.Y();
+    c = normal.Z();
+    d = k;
 }
 int Plane::A() const {
     return a;
