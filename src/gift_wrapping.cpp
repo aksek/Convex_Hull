@@ -2,10 +2,9 @@
 
 std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
-    std::vector<Edge> E;
+    std::list<Edge> E;
     std::vector<Triangle> F;
     std::vector<Triangle> Q;
-    std::vector<Edge> A;
    
     Triangle first_face = find_one_face(points);
     Q.push_back(first_face);
@@ -14,21 +13,43 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
     
     while(Q.empty() != true) {
 
-        Triangle temp = Q[Q.size() - 1];
+        Triangle temp_face = Q[Q.size() - 1];
         Q.pop_back();
-        for(Edge e : temp.edges(points))
+        std::vector<Edge> A;
+        for(Edge e : temp_face.edges(points))
             A.push_back(e);
-        for(Edge e : E) {
+
+        std::vector<Edge> A_and_E;
+
+        for(Edge e0 : E) {
 
             for(Edge e1 : A) {
                 
-                if(e == e1) {
+                if(e0 == e1) {
 
-                    
+                    A_and_E.push_back(e1);
                 }
             }
         }
+
+        for(Edge e0 : A_and_E) {
+
+            Triangle new_face = find_next_face(points, temp_face, e0);
+            std::vector<Edge> B;
+            for(Edge e1 : new_face.edges(points))
+                B.push_back(e1);
+                    
+            for(Edge e1 : B) {
+
+                add_edge(E, e1);
+            }
+
+            Q.push_back(new_face);
+        }
+        F.push_back(temp_face);
     }
+
+    return F;
 }
 
 Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
@@ -86,12 +107,12 @@ Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
                 }
                 if (!point_inside) {
                     if (all_under) {
-                        Triangle temp(A, B, C);
-                        return temp;
+                        Triangle temp_face(A, B, C);
+                        return temp_face;
                     }
                     else if (all_over) {
-                        Triangle temp(A, B, C);
-                        return temp;
+                        Triangle temp_face(A, B, C);
+                        return temp_face;
                     }
                 }
             }
@@ -102,5 +123,58 @@ Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
 
 Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face, Edge e) {
 
+    Vector normal(face.normal(points));
+    Vector a(normal * e.getDirection());
+    Vector temp = points[0] - e.getStart();
+    double smallest_angle = a.dot(temp) / a.magnitude() / temp.magnitude();
+    int first_point = 0;
+    int second_point = 0;
+    int third_point = 0;
 
+    for(long unsigned i = 1; i < points.size(); ++i) {
+
+        temp = points[i] - e.getStart();
+        double angle = a.dot(temp) / a.magnitude() / temp.magnitude();
+        if(angle < smallest_angle) {
+
+            smallest_angle = angle;
+            third_point = i;
+        }
+    }
+
+    if(points[face.A()] == e.getStart())
+        first_point = face.A();
+    else if(points[face.B()] == e.getStart())
+        first_point = face.B();
+    else if(points[face.C()] == e.getStart())
+        first_point = face.C();
+    
+    if(points[face.A()] == e.getStart() + e.getDirection())
+        second_point = face.A();
+    if(points[face.B()] == e.getStart() + e.getDirection())
+        second_point = face.B();
+    if(points[face.C()] == e.getStart() + e.getDirection())
+        second_point = face.C();
+
+    return Triangle(second_point, first_point, third_point);
+}
+
+void gift_wrapping::add_edge(std::list<Edge> &E, Edge e) {
+
+    bool is_in_set = false;
+
+    for (auto it = E.begin() ; it != E.end(); ++it) {
+
+        if(*it == e) {
+
+            is_in_set = true;
+            E.erase(it);
+            break;
+        }
+    }
+
+    if(is_in_set == false) {
+
+        E.push_back(e);
+    }
 }

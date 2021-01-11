@@ -39,7 +39,7 @@ Vector Triangle::normal(std::vector<Point> &points) {
     Vector temp1 = points[this->C()] - points[this->A()];
     Vector temp2 = points[this->B()] - points[this->A()];
     
-    return temp1 * temp2;
+    return temp2 * temp1;
     
 }
 
