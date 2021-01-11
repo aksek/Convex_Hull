@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector.hpp"
 #include "Point.hpp"
+#include <algorithm>
 
 class Edge {
 
@@ -10,10 +11,17 @@ class Edge {
 public:
 
     void setStart(Point start);
-    Point& getStart();
-    Vector& getDirection();
+    const Point& getStart() const;
+    const Vector& getDirection() const;
     void setDirection(Vector direction);
     Edge() = default;
     ~Edge() = default;
-    bool operator==(Edge &that);
+    bool operator==(const Edge &that);
+    Edge(const Edge &e) {start = e.start; direction = e.direction;} 
+    Edge& operator=(const Edge &e) {
+        
+        start = e.start;
+        direction = e.direction;
+        return *this;
+    }  
 };

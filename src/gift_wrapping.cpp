@@ -5,6 +5,8 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
     std::list<Edge> E;
     std::vector<Triangle> F;
     std::vector<Triangle> Q;
+    data_converter c;
+    std::string cmd = "python3 ./src/visualize.py";
    
     Triangle first_face = find_one_face(points);
     Q.push_back(first_face);
@@ -21,15 +23,13 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
         std::vector<Edge> A_and_E;
 
-        for(Edge e0 : E) {
+        for(Edge e0 : A) {
 
-            for(Edge e1 : A) {
-                
-                if(e0 == e1) {
+            if(std::find(E.begin(), E.end(), e0) != E.end()) {
 
-                    A_and_E.push_back(e1);
-                }
+                A_and_E.push_back(e0);
             }
+            
         }
 
         for(Edge e0 : A_and_E) {
@@ -47,6 +47,8 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
+        c.save(points, F);
+        ::popen(cmd.c_str(), "r");
     }
 
     return F;
@@ -125,22 +127,11 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
 
     Vector normal(face.normal(points));
     Vector a(normal * e.getDirection());
-    Vector temp = points[0] - e.getStart();
-    double smallest_angle = a.dot(temp) / a.magnitude() / temp.magnitude();
+    Vector temp;
+    double smallest_angle = 1;
     int first_point = 0;
     int second_point = 0;
     int third_point = 0;
-
-    for(long unsigned i = 1; i < points.size(); ++i) {
-
-        temp = points[i] - e.getStart();
-        double angle = a.dot(temp) / a.magnitude() / temp.magnitude();
-        if(angle < smallest_angle) {
-
-            smallest_angle = angle;
-            third_point = i;
-        }
-    }
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -156,25 +147,28 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     if(points[face.C()] == e.getStart() + e.getDirection())
         second_point = face.C();
 
+    for(long unsigned i = 0; i < points.size(); ++i) {
+
+        if(i != face.A() && i != face.B() && i!= face.C()) {
+            temp = points[i] - e.getStart();
+            double angle = a.dot(temp) / a.magnitude() / temp.magnitude();
+            if(angle < smallest_angle) {
+
+                smallest_angle = angle;
+                third_point = i;
+            }
+        }
+    }
+
     return Triangle(second_point, first_point, third_point);
 }
 
 void gift_wrapping::add_edge(std::list<Edge> &E, Edge e) {
 
-    bool is_in_set = false;
+    auto it = std::find(E.begin(), E.end(), e);
 
-    for (auto it = E.begin() ; it != E.end(); ++it) {
-
-        if(*it == e) {
-
-            is_in_set = true;
-            E.erase(it);
-            break;
-        }
-    }
-
-    if(is_in_set == false) {
-
+    if(it != E.end())
+        E.erase(it);
+    else 
         E.push_back(e);
-    }
 }

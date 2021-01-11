@@ -21,7 +21,15 @@ public:
 
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
-    Point& operator+(Vector &that);
+    Point operator+(const Vector &that) const;
+    Point(const Point &p) {x = p.x; y = p.y; z = p.z;}
+    Point& operator = (const Point &p) {
+        
+        x = p.x;
+        y = p.y;
+        z = p.z;
+        return *this;
+    }
 };
 std::ostream &operator<<(std::ostream &os, const Point &P);
 

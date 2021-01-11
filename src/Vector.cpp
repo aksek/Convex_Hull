@@ -28,7 +28,7 @@ std::ostream &operator<<(std::ostream &os, const Vector &V) {
 
 double Vector::magnitude() {
 
-    double temp = this->x * this->x + this->y * this->y + this->z * this->z;
+    double temp = pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2);
     
     return sqrt(temp);
 }
