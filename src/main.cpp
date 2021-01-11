@@ -8,6 +8,8 @@
 #include "naive_solver.hpp"
 #include "data_converter.hpp"
 #include "data_generator.hpp"
+#include "gift_wrapping.hpp"
+#include "Edge.hpp"
 
 int main() {
     
@@ -16,11 +18,13 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ./src/visualize.py";
 
-    g.generate_data(100, 100);
+    //g.generate_data(100, 100);
     std::vector<Point> points = c.load();
     if (d > 1) Preprocessing::voxelize(points, d);
-    Naive_solver solver;
+    Naive_solver solver1;
+    gift_wrapping solver;
     std::vector<Triangle> convex_hull = solver.solve(points);
+    //std::vector<Triangle> convex_hull1 = solver1.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
 }

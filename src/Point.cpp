@@ -52,3 +52,10 @@ Vector Point::operator-(const Point &that) const {
 std::ostream &operator<<(std::ostream &os, const Point &P) {
     return os << '(' << P.X() << ", " << P.Y() << ", " << P.Z() << ')';
 }
+
+Point Point::operator+(const Vector &that) const{
+    int x = this->x + that.X();
+    int y = this->y + that.Y();
+    int z = this->z + that.Z();
+    return Point(x, y, z);
+}
