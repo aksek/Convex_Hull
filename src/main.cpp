@@ -29,4 +29,5 @@ int main() {
     convex_hull = solver1.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
+    
 }
