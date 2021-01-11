@@ -47,8 +47,8 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        c.save(points, F);
-        ::popen(cmd.c_str(), "r");
+        //c.save(points, F);
+        //::popen(cmd.c_str(), "r");
     }
 
     return F;
@@ -125,13 +125,17 @@ Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
 
 Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face, Edge e) {
 
-    Vector normal(face.normal(points));
-    Vector a(normal * e.getDirection());
-    Vector temp;
+    Vector normal0(face.normal(points));
+    Vector a0(normal0 * e.getDirection());
     double smallest_angle = 1;
     int first_point = 0;
     int second_point = 0;
     int third_point = 0;
+    double mag0;
+    double mag1;
+    Vector temp0;
+    Vector temp1;
+    double dot;
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -150,12 +154,20 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     for(long unsigned i = 0; i < points.size(); ++i) {
 
         if(i != face.A() && i != face.B() && i!= face.C()) {
-            temp = points[i] - e.getStart();
-            double angle = a.dot(temp) / a.magnitude() / temp.magnitude();
+            
+            Triangle face1(second_point, first_point, i);
+            Vector normal1(face1.normal(points));
+            Vector a1(e.getDirection() * normal1);
+            double angle = a0.dot(a1) / a0.magnitude() / a1.magnitude();
             if(angle < smallest_angle) {
 
                 smallest_angle = angle;
                 third_point = i;
+                mag0 = a0.magnitude();
+                mag1 = a1.magnitude();
+                temp0 = a0;
+                temp1 = a1;
+                dot = a0.dot(a1);
             }
         }
     }
