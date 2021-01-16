@@ -6,6 +6,9 @@
 #include"Point.hpp"
 #include"Plane.hpp"
 #include"Vector.hpp"
+#include"Vertex.hpp"
+#include"Face.hpp"
+#include"Edge.hpp"
 
 using namespace std;
 
@@ -20,21 +23,30 @@ struct point_hash {
     }
 };
 
-list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &points, unordered_map<Point, int, point_hash> &remaining) {
-    int remaining_size = remaining.size();
+// void calculate_horizon(Vertex eye_point, Edge crossed_edge, Face cur_face, list<Vertex> horizon, list<Vertex> unclaimed_vertices, vector<Point> &points) {
+//     Point A = points[cur_face.triangle->A()];
+//     Point B = points[cur_face.triangle->B()];
+//     Point C = points[cur_face.triangle->C()];
+//     if(eye_point.point->on_outer_side(A, B, C)) {
+//         cur_face.visible_from_new_vertex = true;
+//     }
+// }
+
+list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &points, unordered_map<Point, int, point_hash> &outside_set) {
+    int outside_set_size = outside_set.size();
     list<Triangle> convex_hull;
 
     // 3.1. Jeżeli P jest pusty - koniec
-    if (remaining.empty()) {
+    if (outside_set.empty()) {
         convex_hull.push_back(Triangle(A, B, C));
         return convex_hull;
     }
 
     // 3.2. Jeżeli P ma jeden element, ten punkt należy do otoczki - koniec
-    if (remaining.size() == 1) {
-        convex_hull.push_back(Triangle(A, B,(remaining.begin())->second));
-        convex_hull.push_back(Triangle(B, C,(remaining.begin())->second));
-        convex_hull.push_back(Triangle(C, A,(remaining.begin())->second));
+    if (outside_set.size() == 1) {
+        convex_hull.push_back(Triangle(A, B,(outside_set.begin())->second));
+        convex_hull.push_back(Triangle(B, C,(outside_set.begin())->second));
+        convex_hull.push_back(Triangle(C, A,(outside_set.begin())->second));
         return convex_hull;
     }
     // 3.3. Znaleźć w P punkt D najbardziej oddalony od płaszczyzny ABC.
@@ -42,7 +54,7 @@ list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &p
     double max = 0;
     int maxIndex;
     double distance;
-    for (auto it = remaining.begin(); it != remaining.end(); it++) {
+    for (auto it = outside_set.begin(); it != outside_set.end(); it++) {
         distance = planeABC.distance(it->first);
         if (distance > max) {
             max = distance;
@@ -50,17 +62,19 @@ list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &p
         }
     }
     Point D = points[maxIndex];
+    outside_set.erase(D);
     // 3.4. Punkt D należy do otoczki wypukłej
     // 3.5. Znaleźć zbiory S1, S2, S3 leżące odpowiednio na zewnątrz (względem wielościanu) płaszczyzn
     // ABD, BCD, CAD. Punkty leżące na zewnątrz więcej niż jednej płaszczyzny mogą być dodane do
     // dowolnego zbioru. Pozostałe punkty nie mogą należeć do otoczki wypukłej i są odrzucane
     unordered_map<Point, int, point_hash> S_ABD, S_BCD, S_CAD;
     Point P;
-    for (auto it = remaining.begin(); it != remaining.end(); it++) {
+    for (auto it = outside_set.begin(); it != outside_set.end(); it++) {
         P = it->first;
         if (P.on_outer_side(points[A], points[B], D)) S_ABD.insert(*it);
         else if (P.on_outer_side(points[B], points[C], D)) S_BCD.insert(*it);
         else if (P.on_outer_side(points[C], points[A], D)) S_CAD.insert(*it);
+    }
 
    // 3.6. Wywołać rekurencyjnie quickhull(A, B, D, S1), quickhull(B, C, D, S2), quickhull(C, A, D, S3)
     convex_hull.merge(quickhull(A, B, maxIndex, points, S_ABD));

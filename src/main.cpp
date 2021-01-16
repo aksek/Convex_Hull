@@ -7,6 +7,7 @@
 #include "preprocessing.hpp"
 #include "naive_solver.hpp"
 #include "quickhull_solver.hpp"
+#include "incremental_solver.hpp"
 #include "data_converter.hpp"
 #include "data_generator.hpp"
 
@@ -20,7 +21,7 @@ int main() {
     // g.generate_data(10, 10);
     std::vector<Point> points = c.load();
     if (d > 1) Preprocessing::voxelize(points, d);
-    Quickhull_solver solver;
+    Incremental_solver solver;
     std::vector<Triangle> convex_hull = solver.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");

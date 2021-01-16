@@ -6,6 +6,9 @@
 
 using namespace std;
 
+Triangle::Triangle() {
+    Triangle(0, 0, 0);
+}
 Triangle::Triangle(int a_index, int b_index, int c_index) {
     a = a_index;
     b = b_index;

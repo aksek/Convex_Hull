@@ -10,7 +10,7 @@ int Point::X() const {return x;}
 int Point::Y() const {return y;}
 int Point::Z() const {return z;}
 
-bool Point::on_outer_side(Point A, Point B, Point C) {
+bool Point::on_outer_side(Point A, Point B, Point C) const {
     Plane plane(A, B, C);
     Vector AB = B - A;
     Vector AC = C - A;
@@ -34,21 +34,25 @@ bool Point::on_outer_side(Point A, Point B, Point C) {
     }
     return false;
 }
+bool Point::on_inner_side(Point A, Point B, Point C) const {
+    Plane plane(A, B, C);
+    return !this->on_outer_side(A, B, C) && !this->on(plane);
+}
 
-bool Point::under(Plane &plane) {
+bool Point::under(Plane &plane) const {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
 }
-bool Point::over(Plane &plane) {
+bool Point::over(Plane &plane) const {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
 }
-bool Point::on(Plane &plane) {
+bool Point::on(Plane &plane) const {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() == 0;
 }
 bool Point::operator==(const Point &that) const {
     if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
     else return true;
 }
-bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) {
+bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) const {
 
     if (!this->on(plane)) return false;
     
