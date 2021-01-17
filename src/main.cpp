@@ -18,7 +18,7 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ../src/visualize.py";
 
-    // g.generate_data(10, 10);
+    g.generate_data(100, 100);
     std::vector<Point> points = c.load();
     if (d > 1) Preprocessing::voxelize(points, d);
     Incremental_solver solver;

@@ -50,11 +50,15 @@ vector<Triangle> Incremental_solver::solve(vector<Point> &points) {
 
     Polyhedron convex_hull(A, B, C, D);
 
-    random_order_points.erase(*A->point);
-    random_order_points.erase(*B->point);
-    random_order_points.erase(*C->point);
-    random_order_points.erase(*D->point);
+    convex_hull.init_conflict_graph(points);
 
+    Vertex* current;
+    for (auto it = random_order_points.begin(); it != random_order_points.end(); it++) {
+        // if (convex_hull.contains(it->first)) continue;
+
+        current = new Vertex(&it->first, it->second);
+        convex_hull.add_vertex(current, points);
+    }
 
     vector<Triangle> result;
     convex_hull.get_triangles(result);

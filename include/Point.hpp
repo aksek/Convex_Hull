@@ -16,11 +16,13 @@ public:
     int X() const;
     int Y() const;
     int Z() const;
-    bool on_outer_side(Point A, Point B, Point C) const;   //A, B, C represent a triangle, whose outer side is the one where the points are seen in this order clockwise
+    bool on_outer_side(const Point A, const Point B, const Point C) const;   //A, B, C represent a triangle, whose outer side is the one where the points are seen in this order clockwise
     bool on_inner_side(Point A, Point B, Point C) const;
     bool under(Plane &plane) const;
     bool over(Plane &plane) const;
     bool on(Plane &plane) const;
+    bool under(double A, double B, double C) const;     // line parameters
+    bool over(double A, double B, double C) const;     // line parameters
     bool inside(Point *A, Point *B, Point *C, Plane &plane) const;
 
     bool operator==(const Point &that) const;

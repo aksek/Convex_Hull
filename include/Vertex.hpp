@@ -2,7 +2,7 @@
 #define VERTEX_H
 
 #include<vector>
-#include<unordered_map>
+#include<unordered_set>
 
 #include"Point.hpp"
 #include"Face.hpp"
@@ -13,7 +13,7 @@ class Vertex {
 public:
     const Point *point;
     int index;
-    std::vector<Face *> faces;
+    std::unordered_set<Face *> faces;
 
     Vertex(const Point *point, int index);
 };
