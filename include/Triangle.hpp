@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include"Point.hpp"
+#include "Edge.hpp"
 
 class Triangle {
 private:
@@ -15,7 +16,9 @@ public:
     int C() const;
 
     bool operator==(const Triangle &that) const;
-    // bool operator<(const Triangle &that) const;
+
+    Vector normal(std::vector<Point> &points);
+    std::vector<Edge> edges(std::vector<Point> &points);
 };
 bool operator<(const Triangle &l, const Triangle &r);
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
