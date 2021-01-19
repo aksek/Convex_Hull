@@ -9,6 +9,7 @@ class Triangle {
 private:
     int a, b, c;        // pointers to Points
 public:
+    Triangle();
     Triangle(int a_index, int b_index, int c_index);
     int A() const;
     int B() const;
@@ -19,6 +20,7 @@ public:
     Vector normal(std::vector<Point> &points);
     std::vector<Edge> edges(std::vector<Point> &points);
 };
+bool operator<(const Triangle &l, const Triangle &r);
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
 struct triangle_hash;
 

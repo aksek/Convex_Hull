@@ -16,6 +16,7 @@ public:
     bool operator==(const Vector &that) const;
     Vector operator*(const Vector &that) const;     //cross product
     double dot(const Vector &that) const;        //dot product
+    double length();
     double magnitude();
     Vector(const Vector &v) {x = v.x; y = v.y; z = v.z;} 
     Vector& operator = (const Vector &v) {

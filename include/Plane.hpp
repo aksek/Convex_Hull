@@ -1,16 +1,21 @@
 #ifndef PLANE_H
 #define PLANE_H
 
+// #include "Point.hpp"
+class Point;
+
 class Plane {
 private:
-    int a, b, c, d;
+    double a, b, c, d;
 public:
     Plane();
-    Plane(int a_coefficient, int b_coefficient, int c_coefficient, int d_coefficient);
-    int A() const;
-    int B() const;
-    int C() const;
-    int D() const;
+    Plane(double a_coefficient, double b_coefficient, double c_coefficient, double d_coefficient);
+    Plane(const Point &A, const Point &B, const Point &C);
+    double A() const;
+    double B() const;
+    double C() const;
+    double D() const;
+    double distance(const Point &P) const;
 };
 
 #endif //PLANE_H

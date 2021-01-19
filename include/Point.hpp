@@ -2,8 +2,10 @@
 #define POINT_H
 
 #include<iostream>
-#include"Vector.hpp"
-#include"Plane.hpp"
+// #include"Vector.hpp"
+// #include"Plane.hpp"
+class Vector;
+class Plane;
 
 class Point{
 private:
@@ -14,10 +16,14 @@ public:
     int X() const;
     int Y() const;
     int Z() const;
-    bool under(Plane &plane);
-    bool over(Plane &plane);
-    bool on(Plane &plane);
-    bool inside(Point *A, Point *B, Point *C, Plane &plane);
+    bool on_outer_side(const Point A, const Point B, const Point C) const;   //A, B, C represent a triangle, whose outer side is the one where the points are seen in this order clockwise
+    bool on_inner_side(Point A, Point B, Point C) const;
+    bool under(Plane &plane) const;
+    bool over(Plane &plane) const;
+    bool on(Plane &plane) const;
+    bool under(double A, double B, double C) const;     // line parameters
+    bool over(double A, double B, double C) const;     // line parameters
+    bool inside(Point *A, Point *B, Point *C, Plane &plane) const;
 
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
