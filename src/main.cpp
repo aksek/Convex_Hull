@@ -10,24 +10,26 @@
 #include "data_generator.hpp"
 #include "gift_wrapping.hpp"
 #include "Edge.hpp"
+#include "timer.hpp"
 
 int main() {
     
-    data_generator g;
-    data_converter c;
-    int d = 1;
-    std::string cmd = "python3 ./src/visualize.py";
+    // data_generator g;
+    // data_converter c;
+    // int d = 1;
+    // std::string cmd = "python3 ./src/visualize.py";
 
-    g.generate_data(100, 100);
-    std::vector<Point> points = c.load();
-    if (d > 1) Preprocessing::voxelize(points, d);
-    Naive_solver solver1;
-    gift_wrapping solver;
-    std::vector<Triangle> convex_hull = solver.solve(points);
-    c.save(points, convex_hull);
+    // g.generate_data(100, 100);
+    // std::vector<Point> points = c.load();
+    // if (d > 1) Preprocessing::voxelize(points, d);
+    // Naive_solver solver;
+    // std::vector<Triangle> convex_hull = solver.solve(points);
+    // c.save(points, convex_hull);
+    // ::popen(cmd.c_str(), "r");
+
+    timer t;
+    std::string cmd = "python3 ./src/time.py";
+
+    t.measure_time(2, 100, 200);
     ::popen(cmd.c_str(), "r");
-    convex_hull = solver1.solve(points);
-    c.save(points, convex_hull);
-    ::popen(cmd.c_str(), "r");
-    
 }

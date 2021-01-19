@@ -7,4 +7,11 @@ CMakeLists.txt
 CMakeLists.txt
 .vscode/.easycpp
 bin/main
+<<<<<<< HEAD
 CMakeLists.txt
+=======
+CMakeLists.txt
+data/input.txt
+data/output.txt
+data/time_data.txt
+>>>>>>> timer
