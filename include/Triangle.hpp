@@ -4,6 +4,7 @@
 #include<iostream>
 #include"Point.hpp"
 #include "Edge.hpp"
+#include <list>
 
 class Triangle {
 private:
@@ -17,7 +18,8 @@ public:
     bool operator==(const Triangle &that) const;
 
     Vector normal(std::vector<Point> &points);
-    std::vector<Edge> edges(std::vector<Point> &points);
+    std::list<Edge> edges(std::vector<Point> &points);
+    double surface(std::vector<Point> &points);
 };
 std::ostream &operator<<(std::ostream &os, const Triangle &T);
 struct triangle_hash;

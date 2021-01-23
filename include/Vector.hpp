@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include <math.h>
+#include "comparator.hpp"
 
 class Vector{
 private:

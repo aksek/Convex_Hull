@@ -4,16 +4,18 @@
 #include<iostream>
 #include"Vector.hpp"
 #include"Plane.hpp"
+#include"Vector.hpp"
+#include "comparator.hpp"
 
 class Point{
 private:
-    int x, y, z;
+    double x, y, z;
 public:
     Point();
-    Point(int x_coordinate, int y_coordinate, int z_coordinate);
-    int X() const;
-    int Y() const;
-    int Z() const;
+    Point(double x_coordinate, double y_coordinate, double z_coordinate);
+    double X() const;
+    double Y() const;
+    double Z() const;
     bool under(Plane &plane);
     bool over(Plane &plane);
     bool on(Plane &plane);
@@ -32,6 +34,5 @@ public:
     }
 };
 std::ostream &operator<<(std::ostream &os, const Point &P);
-
 
 #endif //POINT_H

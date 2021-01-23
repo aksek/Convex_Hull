@@ -16,7 +16,7 @@ void Edge::setDirection(Vector direction) {
     this->direction = direction;
 }
 
-bool Edge::operator==(const Edge &that) {
+bool Edge::operator==(const Edge &that) const {
     
     if(this->getDirection() == that.getDirection() && this->getStart() == that.getStart())
         return true;

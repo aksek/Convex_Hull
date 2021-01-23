@@ -43,25 +43,32 @@ Vector Triangle::normal(std::vector<Point> &points) {
     
 }
 
-std::vector<Edge> Triangle::edges(std::vector<Point> &points) {
+std::list<Edge> Triangle::edges(std::vector<Point> &points) {
 
     Edge temp;
-    std::vector<Edge> edges;
+    std::list<Edge> edges;
 
     temp.setStart(points[this->a]);
     temp.setDirection(points[this->b] - points[this->a]);
+    temp.setEnd(points[this->b]);
 
     edges.push_back(temp);
 
     temp.setStart(points[this->b]);
     temp.setDirection(points[this->c] - points[this->b]);
+    temp.setEnd(points[this->c]);
 
     edges.push_back(temp);
 
     temp.setStart(points[this->c]);
     temp.setDirection(points[this->a] - points[this->c]);
+    temp.setEnd(points[this->a]);
 
     edges.push_back(temp);
     
     return edges;
+}
+
+double Triangle::surface(std::vector<Point> &points) {
+
 }

@@ -6,6 +6,7 @@
 #include "Triangle.hpp"
 #include <fstream>
 #include <algorithm>
+#include <list>
 
 class data_converter {
 
@@ -16,6 +17,7 @@ public:
 
     std::vector<Point> load();
     void save(std::vector<Point> data, std::vector<Triangle> faces);
+    void save(std::vector<Point> data, std::list<Triangle> faces);
 };
 
 #endif

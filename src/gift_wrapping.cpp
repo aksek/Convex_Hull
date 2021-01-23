@@ -4,9 +4,16 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
     std::list<Edge> E;
     std::vector<Triangle> F;
-    std::vector<Triangle> Q;
+    std::list<Triangle> Q;
     data_converter c;
+    std::unordered_set<int> is_not_used;
+    std::unordered_set<int> is_on_boundary;
     std::string cmd = "python3 ./src/visualize.py";
+
+    for(unsigned int i = 0; i < points.size(); ++i) {
+
+        is_not_used.insert(i);
+    }
    
     Triangle first_face = find_one_face(points);
     Q.push_back(first_face);
@@ -15,8 +22,10 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
     
     while(Q.empty() != true) {
 
-        Triangle temp_face = Q[Q.size() - 1];
-        Q.pop_back();
+        is_on_boundary = get_points_form_edges(E, points);
+
+        Triangle temp_face = Q.front();
+        Q.pop_front();
         std::vector<Edge> A;
         for(Edge e : temp_face.edges(points))
             A.push_back(e);
@@ -43,84 +52,68 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
                 add_edge(E, e1);
             }
-
+            
+            std::list<Edge> temp = new_face.edges(points);
+            for(int p : get_points_form_edges(temp, points)) {
+                
+                is_not_used.erase(p);
+            }
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        //c.save(points, F);
-        //::popen(cmd.c_str(), "r");
+        c.save(points, Q);
+        ::popen(cmd.c_str(), "r");
     }
 
     return F;
 }
 
 Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
-    std::vector<Triangle> convex_hull;
-    bool all_under;      // the point is under a triangle if the point is on the triangle's inner side
-    bool all_over;       // likewise, outer side
-    bool point_inside;   // if a point exists inside the triangle, the triangle will be omitted - the gap will be filled with the smaller triangles instead
-    Vector AB, AC, normal;
-    Plane plane;
-    int k;
-    for(int A = 0; A < points.size() - 2; A++) {
 
-        for (int B = A + 1; B < points.size() - 1; B++) {
-            AB = points[B] - points[A];
+    int first_point = 0;
+    int second_point = 0;
+    int third_point = 0;
 
-            for (int C = B + 1; C < points.size(); C++) {
+    for(long unsigned i = 0; i < points.size(); ++i) {
 
-                AC = points[C] - points[A];
-                normal = AB * AC;                    // coordinates of the normal vector == coefficients of the plane
-                k = -(normal.X() * points[A].X() + normal.Y() * points[A].Y() + normal.Z() * points[A].Z()); //last coefficient
-                plane = Plane(normal.X(), normal.Y(), normal.Z(), k);
+        if(comparator::cmpfi(points[first_point].Y(), points[i].Y()) && points[first_point].X() < points[i].X()) {
 
-                all_under = true, all_over = true;
-                point_inside = false;
-                for(int i = 0; i < points.size(); i++) {
-                    if (i == A || i == B || i == C) continue;
-                    if (points[i].inside(&points[A], &points[B], &points[C], plane)) {
-                        point_inside = true;
-                        continue;
-                    }
-                    if (normal.Z() < 0) {
-                        if (points[i].under(plane)) all_over = false;       // not all points are over the triangle
-                        else if (points[i].over(plane)) all_under = false;                                                            // not all points are under the triangle
-                    } else if (normal.Z() > 0) {
-                        if (points[i].under(plane)) all_under = false;       // not all points are under the triangle
-                        else if (points[i].over(plane)) all_over = false;     
-                    }  else {
-                        if (normal.Y() < 0) {
-                            if (points[i].under(plane)) all_over = false;
-                            else if (points[i].over(plane)) all_under = false;
-                        } else if (normal.Y() > 0) {
-                            if (points[i].under(plane)) all_under = false;
-                            else if (points[i].over(plane)) all_over = false;
-                        } else if (normal.X() < 0) {
-                            if (points[i].X() < points[A].X()) all_over = false;
-                            else if (points[i].X() > points[A].X()) all_under = false;
-                        } else if (normal.X() > 0) {
-                            if (points[i].X() < points[A].X()) all_under = false;
-                            else if (points[i].X() > points[A].X()) all_over = false;
-                        } else {
-                            all_under = false;
-                            all_over = false;
-                        }
-                    }                                    
-                }
-                if (!point_inside) {
-                    if (all_under) {
-                        Triangle temp_face(A, B, C);
-                        return temp_face;
-                    }
-                    else if (all_over) {
-                        Triangle temp_face(A, B, C);
-                        return temp_face;
-                    }
-                }
-            }
+            first_point = i;
+        }
+        
+        if(points[first_point].Y() > points[i].Y()) {
+
+            first_point = i;
         }
     }
-    
+
+    for(long unsigned i = 0; i < points.size(); ++i) {
+
+        if(comparator::cmpfi(points[first_point].Y(), points[i].Y()) && points[second_point].X() < points[i].X() && i != first_point) {
+
+            second_point = i;
+        }
+        
+        if(points[second_point].Y() > points[i].Y() && i != first_point) {
+
+            second_point = i;
+        }
+    }
+
+    for(long unsigned i = 0; i < points.size(); ++i) {
+
+        if(comparator::cmpfi(points[first_point].Y(), points[i].Y()) && points[third_point].X() < points[i].X() && i != first_point && i != second_point) {
+
+            third_point = i;
+        }
+        
+        if(points[third_point].Y() > points[i].Y() && i != first_point && i != second_point) {
+
+            third_point = i;
+        }
+    }
+
+    return Triangle(second_point, first_point, third_point);
 }
 
 Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face, Edge e) {
@@ -128,6 +121,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     Vector normal0(face.normal(points));
     Vector a0(normal0 * e.getDirection());
     double smallest_angle = 1;
+    //double smallest_distance = std::numeric_limits<double>::max();
     int first_point = 0;
     int second_point = 0;
     int third_point = 0;
@@ -136,6 +130,8 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     Vector temp0;
     Vector temp1;
     double dot;
+    //Point middle;
+    double smallest_i_angle = 1;
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -144,12 +140,14 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     else if(points[face.C()] == e.getStart())
         first_point = face.C();
     
-    if(points[face.A()] == e.getStart() + e.getDirection())
+    if(points[face.A()] == e.getEnd())
         second_point = face.A();
-    if(points[face.B()] == e.getStart() + e.getDirection())
+    if(points[face.B()] == e.getEnd())
         second_point = face.B();
-    if(points[face.C()] == e.getStart() + e.getDirection())
+    if(points[face.C()] == e.getEnd())
         second_point = face.C();
+
+    //middle = Point((points[first_point].X() + points[second_point].X()) / 2, (points[first_point].Y() + points[second_point].Y()) / 2, (points[first_point].Z() + points[second_point].Z()) / 2);
 
     for(long unsigned i = 0; i < points.size(); ++i) {
 
@@ -159,7 +157,30 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
             Vector normal1(face1.normal(points));
             Vector a1(e.getDirection() * normal1);
             double angle = a0.dot(a1) / a0.magnitude() / a1.magnitude();
-            if(angle < smallest_angle) {
+            double i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
+            //double distance = (middle - points[i]).magnitude();
+            
+            if(points[i].X() == 57 && points[i].Y() == 0 && points[i].Z() == 10) {
+                
+                i = i;
+            }
+
+            if(points[i].X() == 62 && points[i].Y() == 0 && points[i].Z() == 15) {
+                
+                i = i;
+                i = i;
+            }
+            
+            if(comparator::cmpfi(angle, smallest_angle)) {
+
+                if(/*distance < smallest_distance*/ i_angle < smallest_i_angle) {
+                    third_point = i;
+                    smallest_angle = angle;
+                    smallest_i_angle = i_angle;
+                    //smallest_distance = distance;
+                }
+
+            } else if(angle < smallest_angle) {
 
                 smallest_angle = angle;
                 third_point = i;
@@ -168,7 +189,11 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
                 temp0 = a0;
                 temp1 = a1;
                 dot = a0.dot(a1);
+                smallest_i_angle = i_angle;
+                //smallest_distance = distance;
             }
+
+
         }
     }
 
@@ -183,4 +208,22 @@ void gift_wrapping::add_edge(std::list<Edge> &E, Edge e) {
         E.erase(it);
     else 
         E.push_back(e);
+}
+
+std::unordered_set<int> gift_wrapping::get_points_form_edges(std::list<Edge> &E, std::vector<Point> &points) {
+
+    std::unordered_set<int> out;
+
+    for(Edge e : E) {
+
+        for(unsigned int i = 0; i < points.size(); ++i) {
+
+            if(points[i] == e.getStart() || points[i] == e.getEnd()){
+
+                out.insert(i);
+            }
+        }
+    }
+
+    return out;
 }

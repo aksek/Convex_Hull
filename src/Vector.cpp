@@ -19,7 +19,7 @@ double Vector::dot(const Vector &that) const {
     return u + v + w;
 }
 bool Vector::operator==(const Vector &that) const {
-    if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
+    if (!comparator::cmpfi(this->x, that.X()) || !comparator::cmpfi(this->y, that.Y()) || !comparator::cmpfi(this->z, that.Z()) ) return false;
     else return true;
 }
 std::ostream &operator<<(std::ostream &os, const Vector &V) {

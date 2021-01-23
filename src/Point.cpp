@@ -1,13 +1,13 @@
 #include <stdexcept>
 
 #include"Point.hpp"
-#include"Vector.hpp"
+
 
 Point::Point() : x{0}, y{0}, z{0} {}
-Point::Point(int x_coordinate, int y_coordinate, int z_coordinate) : x{x_coordinate}, y{y_coordinate}, z{z_coordinate} {}
-int Point::X() const {return x;}
-int Point::Y() const {return y;}
-int Point::Z() const {return z;}
+Point::Point(double x_coordinate, double y_coordinate, double z_coordinate) : x{x_coordinate}, y{y_coordinate}, z{z_coordinate} {}
+double Point::X() const {return x;}
+double Point::Y() const {return y;}
+double Point::Z() const {return z;}
 
 bool Point::under(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
@@ -19,7 +19,7 @@ bool Point::on(Plane &plane) {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() == 0;
 }
 bool Point::operator==(const Point &that) const {
-    if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
+    if (!comparator::cmpfi(this->x, that.X()) || !comparator::cmpfi(this->y, that.Y()) || !comparator::cmpfi(this->z, that.Z()) ) return false;
     else return true;
 }
 bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) {

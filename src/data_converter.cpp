@@ -74,3 +74,53 @@ void data_converter::save(std::vector<Point> data, std::vector<Triangle> faces) 
 
     file.close();
 }
+
+void data_converter::save(std::vector<Point> data, std::list<Triangle> faces) {
+
+    std::fstream file;
+    std::vector<std::string> lines;
+    std::string line;
+    int size = std::max(data.size(), faces.size());
+    
+    lines.reserve(size + 1);
+    lines.push_back("x,y,z,i,j,k");
+
+    for(int i = 0; i < size; ++i) {
+
+        lines.push_back(",,,");
+    }
+
+    int i = 1;
+
+    for(Point p : data) {
+
+        line = std::to_string(p.X());
+        line += ",";
+        line += std::to_string(p.Y());
+        line += ",";
+        line += std::to_string(p.Z());
+        line += ",";
+        lines[i] = line;
+        ++i;
+    }
+
+    i = 1;
+
+    for(Triangle t : faces) {
+
+        line = std::to_string(t.A());
+        line += ",";
+        line += std::to_string(t.B());
+        line += ",";
+        line += std::to_string(t.C());
+        lines[i] += line;
+        ++i;
+    }
+
+    file.open("./data/output.txt", std::ios::out);
+    
+    for(std::string s : lines)
+        file << s << std::endl;
+
+    file.close();
+}
