@@ -47,7 +47,7 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        //c.save(points, F);
+        c.save(points, F);
         //::popen(cmd.c_str(), "r");
     }
 
@@ -110,11 +110,6 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     int first_point = 0;
     int second_point = 0;
     int third_point = 0;
-    double mag0;
-    double mag1;
-    Vector temp0;
-    Vector temp1;
-    double dot;
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -142,11 +137,6 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
 
                 smallest_angle = angle;
                 third_point = i;
-                mag0 = a0.magnitude();
-                mag1 = a1.magnitude();
-                temp0 = a0;
-                temp1 = a1;
-                dot = a0.dot(a1);
             }
         }
     }

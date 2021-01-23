@@ -7,6 +7,7 @@
 #include "Edge.hpp"
 #include "data_converter.hpp"
 #include <list>
+#include "comparator.hpp"
 
 class gift_wrapping {
 
