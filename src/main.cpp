@@ -22,7 +22,7 @@ int main() {
 
     g.generate_data(100, 100);
     std::vector<Point> points = c.load();
-    if (d > 1) Preprocessing::voxelize(points, d);
+    Preprocessing::voxelize(points, d);
     Incremental_solver solver2;
     Naive_solver solver1;
     gift_wrapping solver;
@@ -30,8 +30,4 @@ int main() {
     std::vector<Triangle> convex_hull = solver.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
-    convex_hull = solver1.solve(points);
-    c.save(points, convex_hull);
-    ::popen(cmd.c_str(), "r");
-    
 }
