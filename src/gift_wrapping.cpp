@@ -107,9 +107,10 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     Vector normal0(face.normal(points));
     Vector a0(normal0 * e.getDirection());
     double smallest_angle = 1;
-    int first_point = 0;
-    int second_point = 0;
-    int third_point = 0;
+    double smallest_i_angle = 1;
+    unsigned first_point = 0;
+    unsigned second_point = 0;
+    unsigned third_point = 0;
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -133,10 +134,22 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
             Vector normal1(face1.normal(points));
             Vector a1(e.getDirection() * normal1);
             double angle = a0.dot(a1) / a0.magnitude() / a1.magnitude();
-            if(angle < smallest_angle) {
+            double i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
+            
+            if(comparator::cmpfi(angle, smallest_angle)) {
+
+                if(i_angle < smallest_i_angle) {
+                    
+                    third_point = i;
+                    smallest_angle = angle;
+                    smallest_i_angle = i_angle;
+                }
+
+            } else if(angle < smallest_angle) {
 
                 smallest_angle = angle;
                 third_point = i;
+                smallest_i_angle = i_angle;
             }
         }
     }
