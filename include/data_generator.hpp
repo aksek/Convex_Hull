@@ -11,7 +11,7 @@ public:
     data_generator() = default;
     ~data_generator() = default;
     unsigned generate_number();
-    void generate_data(int point_number, int range);
+    void generate_data(double point_number, double range);
 };
 
 #endif

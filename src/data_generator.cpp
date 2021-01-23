@@ -7,7 +7,7 @@ unsigned data_generator::generate_number() {
     return generator();
 }
 
-void data_generator::generate_data(int point_number, int range) {
+void data_generator::generate_data(double point_number, double range) {
 
     int x, y, z;
     std::fstream file;
@@ -15,7 +15,7 @@ void data_generator::generate_data(int point_number, int range) {
     std::string line;
     std::random_device rd{};
     std::mt19937 gen{rd()};
-    std::normal_distribution<> d{5,1};
+    std::normal_distribution<> d{range,range / 5};
 
     for(int i = 0; i < point_number; ++i) {
 
