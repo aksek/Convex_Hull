@@ -43,7 +43,7 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
         for(Edge e0 : A_and_E) {
 
-            Triangle new_face = find_next_face(points, temp_face, e0);
+            Triangle new_face = find_next_face(points, temp_face, e0, is_not_used, is_on_boundary);
             std::vector<Edge> B;
             for(Edge e1 : new_face.edges(points))
                 B.push_back(e1);
@@ -52,17 +52,15 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
                 add_edge(E, e1);
             }
-            
-            std::list<Edge> temp = new_face.edges(points);
-            for(int p : get_points_form_edges(temp, points)) {
-                
-                is_not_used.erase(p);
-            }
+
+            is_not_used.erase(new_face.A());
+            is_not_used.erase(new_face.B());
+            is_not_used.erase(new_face.C());
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
         c.save(points, Q);
-        ::popen(cmd.c_str(), "r");
+        //::popen(cmd.c_str(), "r");
     }
 
     return F;
@@ -116,7 +114,7 @@ Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
     return Triangle(second_point, first_point, third_point);
 }
 
-Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face, Edge e) {
+Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face, Edge e, std::unordered_set<int> is_not_used, std::unordered_set<int> is_on_boundary) {
 
     Vector normal0(face.normal(points));
     Vector a0(normal0 * e.getDirection());
@@ -132,6 +130,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     double dot;
     //Point middle;
     double smallest_i_angle = 1;
+    //double smallest_surface = std::numeric_limits<double>::max();
 
     if(points[face.A()] == e.getStart())
         first_point = face.A();
@@ -151,7 +150,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
 
     for(long unsigned i = 0; i < points.size(); ++i) {
 
-        if(i != face.A() && i != face.B() && i!= face.C()) {
+        if(i != face.A() && i != face.B() && i != face.C() && (is_not_used.find(i) != is_not_used.end() || is_on_boundary.find(i) != is_on_boundary.end() )) {
             
             Triangle face1(second_point, first_point, i);
             Vector normal1(face1.normal(points));
@@ -159,7 +158,8 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
             double angle = a0.dot(a1) / a0.magnitude() / a1.magnitude();
             double i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
             //double distance = (middle - points[i]).magnitude();
-            
+            //double surface = face1.surface(points);
+
             if(points[i].X() == 57 && points[i].Y() == 0 && points[i].Z() == 10) {
                 
                 i = i;
@@ -168,16 +168,16 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
             if(points[i].X() == 62 && points[i].Y() == 0 && points[i].Z() == 15) {
                 
                 i = i;
-                i = i;
             }
             
             if(comparator::cmpfi(angle, smallest_angle)) {
 
-                if(/*distance < smallest_distance*/ i_angle < smallest_i_angle) {
+                if(/*distance < smallest_distance*/ i_angle < smallest_i_angle /*surface < smallest_surface*/) {
                     third_point = i;
                     smallest_angle = angle;
                     smallest_i_angle = i_angle;
                     //smallest_distance = distance;
+                    //smallest_surface = surface;
                 }
 
             } else if(angle < smallest_angle) {
@@ -191,6 +191,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
                 dot = a0.dot(a1);
                 smallest_i_angle = i_angle;
                 //smallest_distance = distance;
+                //smallest_surface = surface;
             }
 
 

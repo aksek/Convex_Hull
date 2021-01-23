@@ -71,4 +71,10 @@ std::list<Edge> Triangle::edges(std::vector<Point> &points) {
 
 double Triangle::surface(std::vector<Point> &points) {
 
+    double a0, b0, c0;
+    a0 = (points[a] - points[b]).magnitude();
+    b0 = (points[b] - points[c]).magnitude();
+    c0 = (points[c] - points[a]).magnitude();
+    double p = (a0 + b0 + c0) / 2;
+    return std::sqrt(p * (p - a0) * (p - b0) * (p - c0));
 }

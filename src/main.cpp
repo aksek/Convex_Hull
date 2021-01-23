@@ -19,7 +19,7 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ./src/visualize.py";
 
-    //g.generate_data(1000, 100);
+    g.generate_data(1000, 10000);
     std::vector<Point> points = c.load();
     Preprocessing::voxelize(points, d);
     gift_wrapping solver;

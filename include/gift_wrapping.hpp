@@ -21,7 +21,7 @@ public:
     Triangle find_one_face(std::vector<Point> &points);
     Triangle find_one_face2(std::vector<Point> &points);
     Triangle find_one_face3(std::vector<Point> &points);
-    Triangle find_next_face(std::vector<Point> &points, Triangle face, Edge e);
+    Triangle find_next_face(std::vector<Point> &points, Triangle face, Edge e, std::unordered_set<int> is_not_used, std::unordered_set<int> is_on_boundary);
     void add_edge(std::list<Edge> &E, Edge e);
     std::unordered_set<int> get_points_form_edges(std::list<Edge> &E, std::vector<Point> &points);
 };
