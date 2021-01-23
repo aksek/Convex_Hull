@@ -7,13 +7,13 @@
 
 class Triangle {
 private:
-    int a, b, c;        // pointers to Points
+    unsigned a, b, c;        // pointers to Points
 public:
     Triangle();
-    Triangle(int a_index, int b_index, int c_index);
-    int A() const;
-    int B() const;
-    int C() const;
+    Triangle(unsigned a_index, unsigned b_index, unsigned c_index);
+    unsigned A() const;
+    unsigned B() const;
+    unsigned C() const;
 
     bool operator==(const Triangle &that) const;
 

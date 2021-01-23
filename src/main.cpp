@@ -5,9 +5,9 @@
 #include "Point.hpp"
 #include "Triangle.hpp"
 #include "preprocessing.hpp"
-#include "naive_solver.hpp"
-#include "quickhull_solver.hpp"
-#include "incremental_solver.hpp"
+//#include "naive_solver.hpp"
+//#include "quickhull_solver.hpp"
+//#include "incremental_solver.hpp"
 #include "data_converter.hpp"
 #include "data_generator.hpp"
 #include "gift_wrapping.hpp"
@@ -23,8 +23,8 @@ int main() {
     g.generate_data(100, 100);
     std::vector<Point> points = c.load();
     Preprocessing::voxelize(points, d);
-    Incremental_solver solver2;
-    Naive_solver solver1;
+    //Incremental_solver solver2;
+    //Naive_solver solver1;
     gift_wrapping solver;
   
     std::vector<Triangle> convex_hull = solver.solve(points);

@@ -9,14 +9,14 @@ using namespace std;
 Triangle::Triangle() {
     Triangle(0, 0, 0);
 }
-Triangle::Triangle(int a_index, int b_index, int c_index) {
+Triangle::Triangle(unsigned a_index, unsigned b_index, unsigned c_index) {
     a = a_index;
     b = b_index;
     c = c_index;
 }
-int Triangle::A() const {return a;}
-int Triangle::B() const {return b;}
-int Triangle::C() const {return c;}
+unsigned Triangle::A() const {return a;}
+unsigned Triangle::B() const {return b;}
+unsigned Triangle::C() const {return c;}
 
 bool Triangle::operator==(const Triangle &that) const {
     if (this->a != that.A() || this->b != that.B() || this->c != that.C() ) return false;
@@ -31,8 +31,8 @@ std::ostream &operator<<(std::ostream &os, const Triangle &T) {
 
 struct triangle_hash {
     size_t operator()(const Triangle &T) const {
-        boost::hash<std::vector<int> > vector_hash;
-        vector<int> indices;
+        boost::hash<std::vector<unsigned> > vector_hash;
+        vector<unsigned> indices;
         indices.push_back(T.A());
         indices.push_back(T.B());
         indices.push_back(T.C());
