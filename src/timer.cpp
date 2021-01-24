@@ -1,9 +1,10 @@
 #include "timer.hpp"
 
-void timer::measure_time(int x_number, int min_point_number, int max_point_number) {
+void timer::measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number) {
 
     int step = (max_point_number - min_point_number) / (x_number - 1);
-    Naive_solver naive;
+    //Naive_solver naive;
+    //Quickhull_solver quickhull;
     data_generator g;
     data_converter c;
     std::vector<Point> points;
@@ -12,31 +13,43 @@ void timer::measure_time(int x_number, int min_point_number, int max_point_numbe
     std::vector<std::string> lines;
     std::fstream file;
 
-    lines.push_back("x,y_naive");
+    lines.push_back("x,y_quickhull");
 
     for(int i = min_point_number; i <= max_point_number; i += step) {
 
-        g.generate_cube_data(i, 100);
-        points = c.load();
-
+        std::vector<double> times;
         line = std::to_string(i);
         line += ",";
+        
+        for(int j = 0; j < cycle_per_point; ++j) {
+            
+            Incremental_solver incremental;
+            g.generate_sphere_data(i, i);
+            points = c.load();
+            Preprocessing::voxelize(points, 1);
 
-        auto start = std::chrono::system_clock::now();
+            std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
-        naive.solve(points);
+            incremental.solve(points);
 
-        auto end = std::chrono::system_clock::now();
+            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 
-        std::time_t time2 = std::chrono::system_clock::to_time_t( start );
-        std::time_t time1 = std::chrono::system_clock::to_time_t( end );
-        auto seconds = time1 - time2;
-        std::stringstream ss;
-        ss << seconds;
-        naive_time = ss.str();
+            std::chrono::duration<double, std::milli> time_span = end - start;
 
-        line += naive_time;
+            times.push_back(time_span.count());
 
+            std::cout << "Point: " << i << " Cycle: " << j << std::endl;
+        }
+
+        double miliseconds = 0;
+
+        for(auto time : times) {
+
+            miliseconds += time;
+        }
+
+        miliseconds = miliseconds / times.size();
+        line += std::to_string(miliseconds);
         lines.push_back(line);
     }
 

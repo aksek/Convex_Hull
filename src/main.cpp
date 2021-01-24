@@ -24,17 +24,17 @@ int main() {
     g.generate_sphere_data(10000, 10000);
     std::vector<Point> points = c.load();
     Preprocessing::voxelize(points, d);
-    Incremental_solver solver2;
+    //Incremental_solver solver2;
     //Naive_solver solver1;
-    //gift_wrapping solver;
+    gift_wrapping solver;
     //Quickhull_solver solver3;
-    std::vector<Triangle> convex_hull = solver2.solve(points);
+    std::vector<Triangle> convex_hull = solver.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
 
     // timer t;
     // std::string cmd = "python3 ./src/time.py";
 
-    // t.measure_time(2, 100, 200);
+    // t.measure_time(100, 30, 1000, 10000);
     // ::popen(cmd.c_str(), "r");
 }
