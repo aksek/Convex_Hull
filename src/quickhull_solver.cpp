@@ -1,14 +1,15 @@
 #include<vector>
 #include<unordered_map>
 
-#include"quickhull_solver.hpp"
-#include"Triangle.hpp"
-#include"Point.hpp"
-#include"Plane.hpp"
-#include"Vector.hpp"
-#include"Vertex.hpp"
-#include"Face.hpp"
-// #include"Edge.hpp"
+#include<boost/functional/hash.hpp>
+
+#include "quickhull_solver.hpp"
+
+#include "Triangle.hpp"
+#include "Polyhedron.hpp"
+#include "Vector.hpp"
+#include "Plane.hpp"
+#include "Vertex.hpp"
 
 using namespace std;
 
@@ -23,120 +24,100 @@ struct point_hash {
     }
 };
 
-// void calculate_horizon(Vertex eye_point, Edge crossed_edge, Face cur_face, list<Vertex> horizon, list<Vertex> unclaimed_vertices, vector<Point> &points) {
-//     Point A = points[cur_face.triangle->A()];
-//     Point B = points[cur_face.triangle->B()];
-//     Point C = points[cur_face.triangle->C()];
-//     if(eye_point.point->on_outer_side(A, B, C)) {
-//         cur_face.visible_from_new_vertex = true;
-//     }
-// }
-
-list<Triangle> Quickhull_solver::quickhull(int A, int B, int C, vector<Point> &points, unordered_map<Point, int, point_hash> &outside_set) {
-    int outside_set_size = outside_set.size();
-    list<Triangle> convex_hull;
-
-    // 3.1. Jeżeli P jest pusty - koniec
-    if (outside_set.empty()) {
-        convex_hull.push_back(Triangle(A, B, C));
-        return convex_hull;
-    }
-
-    // 3.2. Jeżeli P ma jeden element, ten punkt należy do otoczki - koniec
-    if (outside_set.size() == 1) {
-        convex_hull.push_back(Triangle(A, B,(outside_set.begin())->second));
-        convex_hull.push_back(Triangle(B, C,(outside_set.begin())->second));
-        convex_hull.push_back(Triangle(C, A,(outside_set.begin())->second));
-        return convex_hull;
-    }
-    // 3.3. Znaleźć w P punkt D najbardziej oddalony od płaszczyzny ABC.
-    Plane planeABC(points[A], points[B], points[C]);
-    double max = 0;
-    int maxIndex;
-    double distance;
-    for (auto it = outside_set.begin(); it != outside_set.end(); it++) {
-        distance = planeABC.distance(it->first);
-        if (distance > max) {
-            max = distance;
-            maxIndex = (it->second);
-        }
-    }
-    Point D = points[maxIndex];
-    outside_set.erase(D);
-    // 3.4. Punkt D należy do otoczki wypukłej
-    // 3.5. Znaleźć zbiory S1, S2, S3 leżące odpowiednio na zewnątrz (względem wielościanu) płaszczyzn
-    // ABD, BCD, CAD. Punkty leżące na zewnątrz więcej niż jednej płaszczyzny mogą być dodane do
-    // dowolnego zbioru. Pozostałe punkty nie mogą należeć do otoczki wypukłej i są odrzucane
-    unordered_map<Point, int, point_hash> S_ABD, S_BCD, S_CAD;
-    Point P;
-    for (auto it = outside_set.begin(); it != outside_set.end(); it++) {
-        P = it->first;
-        if (P.on_outer_side(points[A], points[B], D)) S_ABD.insert(*it);
-        else if (P.on_outer_side(points[B], points[C], D)) S_BCD.insert(*it);
-        else if (P.on_outer_side(points[C], points[A], D)) S_CAD.insert(*it);
-    }
-
-   // 3.6. Wywołać rekurencyjnie quickhull(A, B, D, S1), quickhull(B, C, D, S2), quickhull(C, A, D, S3)
-    convex_hull.merge(quickhull(A, B, maxIndex, points, S_ABD));
-    convex_hull.merge(quickhull(B, C, maxIndex, points, S_BCD));
-    convex_hull.merge(quickhull(C, A, maxIndex, points, S_CAD));
-    return convex_hull;
-}
-
 vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
-    // 1. Znaleźć w zbiorze punktów 3 punkty skrajne
-    int max_index_x = 0, min_index_x = 0;
-    int max_x = INT_MIN, min_x = INT_MAX;
-    int current_x;
+    Point max_x_point, min_x_point;
+    int max_x_index, min_x_index;
+    double max_x = -INFINITY, min_x = INFINITY;
     for (int i = 0; i < points.size(); i++) {
-        Point cur = points[i];
-        current_x = cur.X();
-        if (current_x > max_x) {
-            max_x = current_x;
-            max_index_x = i;
+        if (points[i].X() > max_x) {
+            max_x = points[i].X();
+            max_x_point = points[i];
+            max_x_index = i;
         }
-        if (current_x < min_x) {
-            min_x = current_x;
-            min_index_x = i;
+        if (points[i].X() < min_x) {
+            min_x = points[i].X();
+            min_x_point = points[i];
+            min_x_index = i;
         }
     }
-    Point max_x_point = points[max_index_x];
-    Point min_x_point = points[min_index_x];
 
+    // initial simplex
+    Vertex* A = new Vertex(&max_x_point, max_x_index);
+    
+    Vertex* B = new Vertex(&min_x_point, min_x_index);
+
+    Vector AB = *(B->point) - *(A->point);
+    double max_dist_lin = 0;
+    Point max_dist_lin_point;
+    int max_dist_lin_index;
+    double distance;
+    for (int i = 0; i < points.size(); i++) {
+        Vector CA = *(A->point) - (points[i]);
+        distance = (CA * AB).length() / AB.length();
+        if (distance > max_dist_lin && i != max_x_index && i != min_x_index) {
+            max_dist_lin = distance;
+            max_dist_lin_point = points[i];
+            max_dist_lin_index = i;
+        }
+    }
+    Vertex* C = new Vertex(&max_dist_lin_point, max_dist_lin_index);
+
+    Plane ABC(*(A->point), *(B->point), *(C->point));
+
+    double max_dist_plan = 0;
+    Point max_dist_plan_point;
+    int max_dist_plan_index;
+    for (int i = 0; i < points.size(); i++) {
+        distance = ABC.distance(points[i]);
+        if (distance > max_dist_plan && i != max_x_index && i != min_x_index && i != max_dist_lin_index) {
+            max_dist_plan = distance;
+            max_dist_plan_point = points[i];
+            max_dist_plan_index = i;
+        }
+    }
+    Vertex* D = new Vertex(&max_dist_plan_point, max_dist_plan_index);
+
+    Polyhedron convex_hull(A, B, C, D);
+
+    convex_hull.init_conflict_graph(points);
+
+    // Vertex* current;
+    // for (int i = 0; i < points.size(); i++) {
+    //     // if (convex_hull.contains(it->first)) continue;
+
+    //     current = new Vertex(&points[i], i);
+    //     convex_hull.add_vertex(current, points);
+    // }
+
+    double max_dist;
     int max_dist_index;
-    double max_distance = 0;
-    double distance_numerator, distance_denominator, distance;
-    for (int i = 0; i < points.size(); i++) {
-        distance_numerator = ((max_x_point - min_x_point) * (min_x_point - points[i])).length();
-        distance_denominator = (max_x_point - min_x_point).length();
-        distance = distance_numerator / distance_denominator;
-        if (distance > max_distance) {
-            max_distance = distance;
-            max_dist_index = i;
+    Vertex* current;
+    bool modified = true;
+    while(modified) {
+        modified = false;
+        for (auto it = convex_hull.face_graph.begin(); it != convex_hull.face_graph.end() && !modified; it++) {
+            if (!(*it)->conflicting_points.empty()) {
+
+                Plane face_plane(*((*it)->vertices[0]->point), *((*it)->vertices[1]->point), *((*it)->vertices[2]->point));
+
+                max_dist = 0;
+                for (auto jt = (*it)->conflicting_points.begin(); jt != (*it)->conflicting_points.end(); jt++) {
+                    distance = face_plane.distance(points[*jt]);
+                    if (distance > max_dist) {
+                        max_dist = distance;
+                        max_dist_index = *jt;
+                    }
+                }
+                current = new Vertex(&points[max_dist_index], max_dist_index);
+                convex_hull.add_vertex(current, points);
+                
+                modified = true;
+            }
         }
     }
-    Point max_dist_point = points[max_dist_index];
 
-    // 2. Podzielić zbiór na dwa podzbiory S1 i S2, znajdujące się nad i pod płaszczyzną ABC
-    Plane max_plane(max_x_point, min_x_point, max_dist_point);
-    unordered_map<Point, int, point_hash> upper, lower;
-    for (int i = 0; i < points.size(); i++) {
-        if (points[i].over(max_plane)) upper.emplace(points[i], i);
-        else if (points[i].under(max_plane)) lower.emplace(points[i], i);
-    }
-    int upper_size = upper.size();
-    int lower_size = lower.size();
-    // 3. Wywołać quickhull(A, B, C, S1) i quickhull(C, B, A, S2) (argumenty: A, B, C, P)
-    list<Triangle> convex_hull;
-    if ((upper.begin()->first).on_outer_side(points[max_index_x], points[min_index_x], points[max_dist_index])) {
-        convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, upper);
-        convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, lower));
-    } else {
-        convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, lower);
-        convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, upper));
-    }
-    vector<Triangle> convex_hull_vector;
-    convex_hull_vector.assign(convex_hull.begin(), convex_hull.end());
 
-    return convex_hull_vector;
+    vector<Triangle> result;
+    convex_hull.get_triangles(result);
+    return result;
 }
