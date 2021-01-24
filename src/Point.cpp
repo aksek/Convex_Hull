@@ -10,7 +10,7 @@ double Point::X() const {return x;}
 double Point::Y() const {return y;}
 double Point::Z() const {return z;}
 
-bool Point::on_outer_side(Point A, Point B, Point C) {
+bool Point::on_outer_side(const Point A, const Point B, const Point C) const {
     Plane plane(A, B, C);
     Vector AB = B - A;
     Vector AC = C - A;
@@ -21,9 +21,9 @@ bool Point::on_outer_side(Point A, Point B, Point C) {
         if (this->under(plane)) return true;
     } else {        // Z == 0 => the triangle is vertical and the plane is treated as a line 
         if (normal.Y() > 0) {
-            if (this->over(plane)) return true;
+            if (this->over(plane.A(), plane.B(), plane.D())) return true;
         } else if (normal.Y() < 0) {
-            if (this->under(plane)) return true;
+            if (this->under(plane.A(), plane.B(), plane.D())) return true;
         } else {    // Y == 0 => the triangle is perpendicular to the X axis
             if (normal.X() > 0) {
                 if (this->X() > A.X()) return true;
@@ -34,21 +34,33 @@ bool Point::on_outer_side(Point A, Point B, Point C) {
     }
     return false;
 }
+bool Point::on_inner_side(Point A, Point B, Point C) const {
+    Plane plane(A, B, C);
+    return !this->on_outer_side(A, B, C) && !this->on(plane);
+}
 
-bool Point::under(Plane &plane) {
-    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
+bool Point::under(Plane &plane) const {
+    // return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
+    return z < (-plane.A() * x - plane.B() * y - plane.D()) / plane.C();
 }
-bool Point::over(Plane &plane) {
-    return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
+bool Point::over(Plane &plane) const {
+    // return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
+    return z > (-plane.A() * x - plane.B() * y - plane.D()) / plane.C();
 }
-bool Point::on(Plane &plane) {
+bool Point::on(Plane &plane) const {
     return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() == 0;
+}
+bool Point::under(double A, double B, double C) const {     // line
+    return y < (- A * x - C) / B;
+}
+bool Point::over(double A, double B, double C) const {     // line
+    return y > (- A * x - C) / B;
 }
 bool Point::operator==(const Point &that) const {
     if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
     else return true;
 }
-bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) {
+bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) const {
 
     if (!this->on(plane)) return false;
     
@@ -79,7 +91,7 @@ std::ostream &operator<<(std::ostream &os, const Point &P) {
     return os << '(' << P.X() << ", " << P.Y() << ", " << P.Z() << ')';
 }
 
-Point Point::operator+(const Vector &that) const{
+Point Point::operator+(const Vector &that) const {
     double x = this->x + that.X();
     double y = this->y + that.Y();
     double z = this->z + that.Z();

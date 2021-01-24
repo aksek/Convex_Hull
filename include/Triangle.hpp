@@ -8,6 +8,7 @@ class Triangle {
 private:
     int a, b, c;        // indeces Points
 public:
+    Triangle();
     Triangle(int a_index, int b_index, int c_index);
     int A() const;
     int B() const;

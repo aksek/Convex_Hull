@@ -27,6 +27,7 @@ public:
 
     bool operator==(const Point &that) const;
     Vector operator-(const Point &that) const;
+    Point operator+(const Vector &that) const;
 };
 std::ostream &operator<<(std::ostream &os, const Point &P);
 
