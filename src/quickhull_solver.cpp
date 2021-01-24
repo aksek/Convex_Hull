@@ -127,9 +127,16 @@ vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
     int upper_size = upper.size();
     int lower_size = lower.size();
     // 3. Wywołać quickhull(A, B, C, S1) i quickhull(C, B, A, S2) (argumenty: A, B, C, P)
-    list<Triangle> convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, upper);
-    convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, lower));
+    list<Triangle> convex_hull;
+    if ((upper.begin()->first).on_outer_side(points[max_index_x], points[min_index_x], points[max_dist_index])) {
+        convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, upper);
+        convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, lower));
+    } else {
+        convex_hull = quickhull(max_index_x, min_index_x, max_dist_index, points, lower);
+        convex_hull.merge(quickhull(max_index_x, max_dist_index, min_index_x, points, upper));
+    }
     vector<Triangle> convex_hull_vector;
     convex_hull_vector.assign(convex_hull.begin(), convex_hull.end());
+
     return convex_hull_vector;
 }

@@ -18,7 +18,7 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ../src/visualize.py";
 
-    g.generate_data(10, 1000);
+    g.generate_data(100, 1000);
     std::vector<Point> points = c.load();
     if (d > 1) Preprocessing::voxelize(points, d);
     Quickhull_solver solver1;
