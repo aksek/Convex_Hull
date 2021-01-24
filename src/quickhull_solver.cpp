@@ -26,9 +26,9 @@ struct point_hash {
 
 vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
     Point max_x_point, min_x_point;
-    int max_x_index, min_x_index;
+    unsigned max_x_index, min_x_index;
     double max_x = -INFINITY, min_x = INFINITY;
-    for (int i = 0; i < points.size(); i++) {
+    for (unsigned i = 0; i < points.size(); i++) {
         if (points[i].X() > max_x) {
             max_x = points[i].X();
             max_x_point = points[i];
@@ -49,9 +49,9 @@ vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
     Vector AB = *(B->point) - *(A->point);
     double max_dist_lin = 0;
     Point max_dist_lin_point;
-    int max_dist_lin_index;
+    unsigned max_dist_lin_index;
     double distance;
-    for (int i = 0; i < points.size(); i++) {
+    for (unsigned i = 0; i < points.size(); i++) {
         Vector CA = *(A->point) - (points[i]);
         distance = (CA * AB).length() / AB.length();
         if (distance > max_dist_lin && i != max_x_index && i != min_x_index) {
@@ -66,8 +66,8 @@ vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
 
     double max_dist_plan = 0;
     Point max_dist_plan_point;
-    int max_dist_plan_index;
-    for (int i = 0; i < points.size(); i++) {
+    unsigned max_dist_plan_index;
+    for (unsigned i = 0; i < points.size(); i++) {
         distance = ABC.distance(points[i]);
         if (distance > max_dist_plan && i != max_x_index && i != min_x_index && i != max_dist_lin_index) {
             max_dist_plan = distance;

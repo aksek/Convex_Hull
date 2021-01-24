@@ -16,7 +16,7 @@ void timer::measure_time(int x_number, int min_point_number, int max_point_numbe
 
     for(int i = min_point_number; i <= max_point_number; i += step) {
 
-        g.generate_data(i, 100);
+        g.generate_cube_data(i, 100);
         points = c.load();
 
         line = std::to_string(i);

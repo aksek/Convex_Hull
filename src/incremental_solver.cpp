@@ -26,7 +26,7 @@ struct point_hash {
 
 vector<Triangle> Incremental_solver::solve(vector<Point> &points) {
     unordered_map<Point, int, point_hash> random_order_points;
-    for (int i = 0; i < points.size(); i++) {
+    for (unsigned i = 0; i < points.size(); i++) {
         random_order_points.insert(make_pair(points[i], i));
     }
 

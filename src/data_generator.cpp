@@ -75,7 +75,6 @@ void data_generator::generate_sphere_data(int point_number, double radius) {
         a = gen();
         b = gen();
         r = gen();
-        double sin_a = std::sin(a);
         x = std::cos(a) * std::cos(b) * std::fmod(r, radius);
         y = std::cos(a) * std::sin(b) * std::fmod(r, radius);
         z = std::sin(a) * std::fmod(r, radius);

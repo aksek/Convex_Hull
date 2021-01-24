@@ -20,7 +20,7 @@ struct point_hash {
 
 void Preprocessing::voxelize(vector<Point> &points, int d) {
     unordered_set<Point, point_hash> voxelized_points;
-    for (int i = 0; i < points.size(); i++) {
+    for (unsigned i = 0; i < points.size(); i++) {
         int voxel_x = (points[i].X() / d) * d;
         int voxel_y = (points[i].Y() / d) * d;
         int voxel_z = (points[i].Z() / d) * d;

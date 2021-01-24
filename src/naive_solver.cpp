@@ -18,12 +18,12 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
     Vector AB, AC, normal;
     Plane plane;
     int k;
-    for(int A = 0; A < points.size() - 2; A++) {
+    for(unsigned A = 0; A < points.size() - 2; A++) {
 
-        for (int B = A + 1; B < points.size() - 1; B++) {
+        for (unsigned B = A + 1; B < points.size() - 1; B++) {
             AB = points[B] - points[A];
 
-            for (int C = B + 1; C < points.size(); C++) {
+            for (unsigned C = B + 1; C < points.size(); C++) {
 
                 AC = points[C] - points[A];
                 normal = AB * AC;                    // coordinates of the normal vector == coefficients of the plane
@@ -32,7 +32,7 @@ vector<Triangle> Naive_solver::solve(vector<Point> &points) {
 
                 all_under = true, all_over = true;
                 point_inside = false;
-                for(int i = 0; i < points.size(); i++) {
+                for(unsigned i = 0; i < points.size(); i++) {
                     if (i == A || i == B || i == C) continue;
                     if (points[i].inside(&points[A], &points[B], &points[C], plane)) {
                         point_inside = true;

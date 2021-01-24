@@ -108,7 +108,7 @@ void Polyhedron::add_vertex(Vertex *V, vector<Point> &points) {
     // for (int i = 0; i < conflicting_faces.size(); i++) {
     for (auto face_iter = conflicting_faces.begin(); face_iter != conflicting_faces.end(); face_iter++) {
 
-        for (int j = 0; j < (*face_iter)->vertices.size(); j++){
+        for (unsigned j = 0; j < (*face_iter)->vertices.size(); j++){
 
             (*face_iter)->vertices[j]->faces.erase(*face_iter);
             border_vertices.insert((*face_iter)->vertices[j]);
@@ -133,7 +133,7 @@ void Polyhedron::add_vertex(Vertex *V, vector<Point> &points) {
     vector<Vertex *> ordered_border_vertices;
     ordered_border_vertices.push_back(*border_vertices.begin());
     border_vertices.erase(border_vertices.begin());
-    bool found_next = false;
+    //bool found_next = false;
     
     Vertex *current = nullptr;
 
@@ -166,7 +166,7 @@ void Polyhedron::add_vertex(Vertex *V, vector<Point> &points) {
     Face *new_face;
     Face *neighbour_face;
     int second, reference;
-    for (int i = 0; i < ordered_border_vertices.size(); i++) {
+    for (unsigned i = 0; i < ordered_border_vertices.size(); i++) {
         second = (i + 1) % ordered_border_vertices.size();
         reference = (i + 2) % ordered_border_vertices.size();
 
@@ -223,7 +223,7 @@ void Polyhedron::get_triangles(std::vector<Triangle> &triangles) {
 void Polyhedron::init_conflict_graph(vector<Point> &points) {
     unordered_set<Face *> temp;
     Face *face;
-    for (int i = 0; i < points.size(); i++) {
+    for (unsigned i = 0; i < points.size(); i++) {
         conflict_graph.insert(make_pair(i, temp));
         for (auto it = face_graph.begin(); it != face_graph.end(); it++) {
             face = *it;

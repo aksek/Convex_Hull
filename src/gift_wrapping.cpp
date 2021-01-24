@@ -48,7 +48,7 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        //c.save(points, F);
+        c.save(points, F);
         //::popen(cmd.c_str(), "r");
     }
 
