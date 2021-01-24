@@ -7,7 +7,7 @@
 
 class Triangle {
 private:
-    unsigned a, b, c;        // pointers to Points
+    unsigned int a, b, c; 
 public:
     Triangle();
     Triangle(unsigned a_index, unsigned b_index, unsigned c_index);

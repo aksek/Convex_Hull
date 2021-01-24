@@ -1,4 +1,5 @@
 #include "gift_wrapping.hpp"
+#include "Plane.hpp"
 
 std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
 
@@ -47,7 +48,7 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        c.save(points, F);
+        //c.save(points, F);
         //::popen(cmd.c_str(), "r");
     }
 
@@ -107,6 +108,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     Vector normal0(face.normal(points));
     Vector a0(normal0 * e.getDirection());
     double smallest_angle = 1;
+
     double smallest_i_angle = 1;
     unsigned first_point = 0;
     unsigned second_point = 0;
@@ -126,6 +128,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
     if(points[face.C()] == e.getStart() + e.getDirection())
         second_point = face.C();
 
+
     for(unsigned i = 0; i < points.size(); ++i) {
 
         if(i != face.A() && i != face.B() && i!= face.C()) {
@@ -134,6 +137,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
             Vector normal1(face1.normal(points));
             Vector a1(e.getDirection() * normal1);
             double angle = a0.dot(a1) / a0.magnitude() / a1.magnitude();
+
             double i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
             
             if(comparator::cmpfi(angle, smallest_angle)) {

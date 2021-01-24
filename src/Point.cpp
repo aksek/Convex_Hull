@@ -91,7 +91,7 @@ std::ostream &operator<<(std::ostream &os, const Point &P) {
     return os << '(' << P.X() << ", " << P.Y() << ", " << P.Z() << ')';
 }
 
-Point Point::operator+(const Vector &that) const{
+Point Point::operator+(const Vector &that) const {
     double x = this->x + that.X();
     double y = this->y + that.Y();
     double z = this->z + that.Z();

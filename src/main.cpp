@@ -20,7 +20,7 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ./src/visualize.py";
 
-    g.generate_data(100, 100);
+    g.generate_data(10000, 10000);
     std::vector<Point> points = c.load();
     Preprocessing::voxelize(points, d);
     //Incremental_solver solver2;
@@ -30,4 +30,5 @@ int main() {
     std::vector<Triangle> convex_hull = solver.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
+    
 }
