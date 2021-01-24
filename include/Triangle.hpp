@@ -6,7 +6,7 @@
 
 class Triangle {
 private:
-    int a, b, c;        // pointers to Points
+    int a, b, c;        // indeces Points
 public:
     Triangle(int a_index, int b_index, int c_index);
     int A() const;
