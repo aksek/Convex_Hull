@@ -10,21 +10,24 @@
 #include "incremental_solver.hpp"
 #include "data_converter.hpp"
 #include "data_generator.hpp"
+#include "gift_wrapping.hpp"
+#include "Edge.hpp"
 
 int main() {
     
     data_generator g;
     data_converter c;
     int d = 1;
-    std::string cmd = "python3 ../src/visualize.py";
+    std::string cmd = "python3 ./src/visualize.py";
 
     g.generate_data(10000, 10000);
     std::vector<Point> points = c.load();
-    if (d > 1) Preprocessing::voxelize(points, d);
-    Quickhull_solver solver1;
-    // Incremental_solver solver1;
+    Preprocessing::voxelize(points, d);
+    //Incremental_solver solver2;
+    //Naive_solver solver1;
+    gift_wrapping solver;
   
-    std::vector<Triangle> convex_hull = solver1.solve(points);
+    std::vector<Triangle> convex_hull = solver.solve(points);
     c.save(points, convex_hull);
     ::popen(cmd.c_str(), "r");
     
