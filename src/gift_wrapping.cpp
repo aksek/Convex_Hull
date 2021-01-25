@@ -46,10 +46,10 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             }
 
             Q.push_back(new_face);
+            c.save(points, Q);
+            ::popen(cmd.c_str(), "r");
         }
         F.push_back(temp_face);
-        c.save(points, F);
-        //::popen(cmd.c_str(), "r");
     }
 
     return F;
@@ -140,7 +140,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
 
             double i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
             
-            if(comparator::cmpfi(angle, smallest_angle)) {
+            /*if(comparator::cmpfi(angle, smallest_angle)) {
 
                 if(i_angle < smallest_i_angle) {
                     
@@ -149,7 +149,7 @@ Triangle gift_wrapping::find_next_face(std::vector<Point> &points, Triangle face
                     smallest_i_angle = i_angle;
                 }
 
-            } else if(angle < smallest_angle) {
+            } else */if(angle < smallest_angle) {
 
                 smallest_angle = angle;
                 third_point = i;

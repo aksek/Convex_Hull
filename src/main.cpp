@@ -21,7 +21,7 @@ int main() {
     int d = 1;
     std::string cmd = "python3 ./src/visualize.py";
 
-    g.generate_sphere_data(10000, 10000);
+    //g.generate_sphere_data(10000, 10000);
     std::vector<Point> points = c.load();
     Preprocessing::voxelize(points, d);
     //Incremental_solver solver2;
