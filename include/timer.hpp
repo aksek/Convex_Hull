@@ -1,3 +1,5 @@
+// Kowalski, Convex_Hull
+
 #pragma once
 #include "naive_solver.hpp"
 #include "data_generator.hpp"
