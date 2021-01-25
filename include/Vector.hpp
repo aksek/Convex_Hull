@@ -3,7 +3,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include<iostream>
+#include <iostream>
 #include <math.h>
 
 class Vector{
@@ -21,13 +21,7 @@ public:
     double length();
     double magnitude();
     Vector(const Vector &v) {x = v.x; y = v.y; z = v.z;} 
-    Vector& operator = (const Vector &v) {
-        
-        x = v.x;
-        y = v.y;
-        z = v.z;
-        return *this;
-    }  
+    Vector& operator = (const Vector &v);
 };
 std::ostream &operator<<(std::ostream &os, const Vector &P);
 

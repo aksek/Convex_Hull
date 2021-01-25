@@ -35,8 +35,12 @@ std::ostream &operator<<(std::ostream &os, const Vector &V) {
 }
 
 double Vector::magnitude() {
-
     double temp = pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2);
-    
     return sqrt(temp);
 }
+Vector& Vector::operator= (const Vector &v) {  
+    x = v.x;
+    y = v.y;
+    z = v.z;
+    return *this;
+} 

@@ -3,7 +3,6 @@
 #ifndef PLANE_H
 #define PLANE_H
 
-// #include "Point.hpp"
 class Point;
 
 class Plane {

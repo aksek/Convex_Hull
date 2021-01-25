@@ -56,7 +56,6 @@ vector<Triangle> Incremental_solver::solve(vector<Point> &points) {
 
     Vertex* current;
     for (auto it = random_order_points.begin(); it != random_order_points.end(); it++) {
-        // if (convex_hull.contains(it->first)) continue;
 
         current = new Vertex(&it->first, it->second);
         convex_hull.add_vertex(current, points);
