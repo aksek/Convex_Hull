@@ -1,3 +1,5 @@
+// Kowalski, Convex_Hull
+
 #include "Edge.hpp"
 
 const Point& Edge::getStart() const {
