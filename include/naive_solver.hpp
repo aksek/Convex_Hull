@@ -1,3 +1,5 @@
+// Kosek, Convex_Hull
+
 #ifndef NAIVE_SOLVER_H
 #define NAIVE_SOLVER_H
 

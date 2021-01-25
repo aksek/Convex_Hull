@@ -1,3 +1,5 @@
+// Kowalski, Convex_Hull
+
 #include "data_generator.hpp"
 
 unsigned data_generator::generate_number() {
