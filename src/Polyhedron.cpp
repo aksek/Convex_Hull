@@ -12,17 +12,6 @@
 
 using namespace std;
 
-// struct vertex_ptr_hash {
-//     size_t operator()(const Vertex *V) const {
-//         boost::hash<std::vector<int> > vector_hash;
-//         std::vector<int> coors;
-//         coors.push_back(V->point->X());
-//         coors.push_back(V->point->Y());
-//         coors.push_back(V->point->Z());
-//         return vector_hash(coors);
-//     }
-// };
-
 Face * Polyhedron::push_face_correct_side(Vertex* V, Vertex* A, Vertex* B, Vertex* C) {
     Face *face;
     vector<Vertex *> vertices;
@@ -60,7 +49,6 @@ Polyhedron::Polyhedron(Vertex* A, Vertex* B, Vertex* C, Vertex* D) {
     max_x = INT_MIN, max_y = INT_MIN, max_z = INT_MIN;
     Point cur;
     for (auto it = vertex_graph.begin(); it != vertex_graph.end(); it++) {
-        // cur = *vertex_graph[i]->point;
         cur = *(*it)->point;
 
         if (cur.X() < min_x) min_x = cur.X();
@@ -107,7 +95,6 @@ void Polyhedron::add_vertex(Vertex *V, vector<Point> &points) {
     unordered_set<Face *> conflicting_faces = conflict_graph[V->index];
     if (conflicting_faces.empty()) return;
 
-    // for (int i = 0; i < conflicting_faces.size(); i++) {
     for (auto face_iter = conflicting_faces.begin(); face_iter != conflicting_faces.end(); face_iter++) {
 
         for (unsigned j = 0; j < (*face_iter)->vertices.size(); j++){
@@ -135,7 +122,6 @@ void Polyhedron::add_vertex(Vertex *V, vector<Point> &points) {
     vector<Vertex *> ordered_border_vertices;
     ordered_border_vertices.push_back(*border_vertices.begin());
     border_vertices.erase(border_vertices.begin());
-    //bool found_next = false;
     
     Vertex *current = nullptr;
 
