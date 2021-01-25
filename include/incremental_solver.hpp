@@ -1,3 +1,5 @@
+// Kosek, Convex_Hull
+
 #ifndef INCREMENTAL_SOLVER_H
 #define INCREMENTAL_SOLVER_H
 
