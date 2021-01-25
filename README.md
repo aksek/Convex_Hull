@@ -68,10 +68,10 @@ i, j, k – indeksy punktów tworzących trójkąty należące do powłoki.
 
 ### Metody rozwiązania
 Program rozwiązuje zadanie przy pomocy następujących algorytmów:
-* algorytm naiwny
-* algorytm giftwrapping
-* algorytm quickhull
-* algorytm przyrostowy
+* algorytm naiwny - najprostszy algorytm, sprawdzający wszystkie możliwości
+* algorytm giftwrapping - algorytm wykorzystujący wcześniej zidentyfikowane ściany otoczki do znajdowania kolejnych 
+* algorytm przyrostowy - algorytm wykorzystujący strukturę grafową do reprezentacji otoczki wypukłej, dodający wierzchołki w losowej kolejności
+* algorytm quickhull - algorytm podobny do przyrostowego, wybierający najbardziej korzystne punkty do dodania do otoczki wypukłej
 
 ### Przewodnik po plikach źródłowych
 Wszystkie pliki nagłówkowe znajdują się w katalogu include, wszystkie pliki implementacyjne znajdują się w katalogu src.
