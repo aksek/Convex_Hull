@@ -1,3 +1,5 @@
+// Kowalski, Convex_Hull
+
 #include "timer.hpp"
 
 void timer::measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number) {
