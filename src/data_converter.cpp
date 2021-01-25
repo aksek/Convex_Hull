@@ -1,14 +1,14 @@
 #include "data_converter.hpp"
 
 
-std::vector<Point> data_converter::load() {
+std::vector<Point> data_converter::load(std::string input_file) {
 
     std::fstream file;
     std::string temp;
     std::vector<Point> data;
     std::string x, y, z;
 
-    file.open("./data/input.txt", std::ios::in);
+    file.open(input_file, std::ios::in);
 
     while(std::getline(file, temp)) {
         

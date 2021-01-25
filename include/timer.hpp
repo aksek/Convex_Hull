@@ -8,11 +8,12 @@
 #include "preprocessing.hpp"
 #include "quickhull_solver.hpp"
 #include "incremental_solver.hpp"
+#include "gift_wrapping.hpp"
 
 class timer {
 
 public:
     timer() = default;
     ~timer() = default;
-    void measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number);
+    void measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number, int solver, int data_type, int d = 1);
 };

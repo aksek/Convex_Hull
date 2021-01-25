@@ -14,7 +14,7 @@ public:
     data_converter() = default;
     ~data_converter() = default;
 
-    std::vector<Point> load();
+    std::vector<Point> load(std::string input_file = "./data/input.txt");
     void save(std::vector<Point> data, std::vector<Triangle> faces);
 };
 

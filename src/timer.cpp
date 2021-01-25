@@ -1,10 +1,12 @@
 #include "timer.hpp"
 
-void timer::measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number) {
+void timer::measure_time(int x_number, int cycle_per_point, int min_point_number, int max_point_number , int solver, int data_type, int d) {
 
     int step = (max_point_number - min_point_number) / (x_number - 1);
-    //Naive_solver naive;
-    //Quickhull_solver quickhull;
+    Naive_solver naive;
+    Quickhull_solver quickhull;
+    Incremental_solver incremental;
+    gift_wrapping gift_wrapping;
     data_generator g;
     data_converter c;
     std::vector<Point> points;
@@ -12,8 +14,9 @@ void timer::measure_time(int x_number, int cycle_per_point, int min_point_number
     std::string line;
     std::vector<std::string> lines;
     std::fstream file;
+    std::chrono::high_resolution_clock::time_point start, end;
 
-    lines.push_back("x,y_quickhull");
+    lines.push_back("x,y");
 
     for(int i = min_point_number; i <= max_point_number; i += step) {
 
@@ -23,16 +26,52 @@ void timer::measure_time(int x_number, int cycle_per_point, int min_point_number
         
         for(int j = 0; j < cycle_per_point; ++j) {
             
-            Incremental_solver incremental;
-            g.generate_sphere_data(i, i);
+            switch(data_type) {
+
+                case 's':
+                    g.generate_sphere_data(i, i);
+                    break;
+
+                case 'c':
+
+                    g.generate_cube_data(i, i);
+                    break;
+                case 'n':
+
+                    g.generate_normal_distribution(i, i);
+            }
+            
             points = c.load();
-            Preprocessing::voxelize(points, 1);
+            Preprocessing::voxelize(points, d);
 
-            std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+            switch(solver) {
 
-            incremental.solve(points);
+                case 'i':
+                    
+                    start = std::chrono::high_resolution_clock::now();
+                    incremental.solve(points);
+                    end = std::chrono::high_resolution_clock::now();
+                    break;
 
-            std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+                case 'g':
+
+                    start = std::chrono::high_resolution_clock::now();
+                    gift_wrapping.solve(points);
+                    end = std::chrono::high_resolution_clock::now();
+                    break;
+                case 'n':
+
+                    start = std::chrono::high_resolution_clock::now();
+                    naive.solve(points);
+                    end = std::chrono::high_resolution_clock::now();
+                    break;
+                case 'q':
+
+                    start = std::chrono::high_resolution_clock::now();
+                    quickhull.solve(points);
+                    end = std::chrono::high_resolution_clock::now();
+                    break;  
+            }
 
             std::chrono::duration<double, std::milli> time_span = end - start;
 

@@ -7,19 +7,19 @@ df = pd.read_csv('./data/time_data.txt')
 
 trace1 = go.Scatter(
 	
-	x=df.x, y=df.y_quickhull,
-    	name = 'incremental',
+	x=df.x, y=df.y,
+    	name = 'measured time',
     	showlegend = True
 	)
 	
-trace2 = go.Scatter(
+# trace2 = go.Scatter(
 	
-	x=df.x, y = 0.126451 * df.x - 86.330999,
-    	name = 'regression',
-    	showlegend = True
-	)
+# 	x=df.x, y = 0.126451 * df.x - 86.330999,
+#     	name = 'regression',
+#     	showlegend = True
+# 	)
 	
-data = [trace1, trace2]
+data = [trace1]
 
 layout = go.Layout(
 	title= dict(
