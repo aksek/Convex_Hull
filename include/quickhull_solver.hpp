@@ -1,3 +1,5 @@
+// Kosek, Convex_Hull
+
 #ifndef QUICKHULL_SOLVER_H
 #define QUICKHULL_SOLVER_H
 
