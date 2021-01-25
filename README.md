@@ -98,3 +98,7 @@ Klasy pomocnicze:
 * data_generator
 * preprocessing
 * timer
+
+Skrypty w Pythonie realizujące wizualizację wyników (src):
+* visualize.py
+* time.py
