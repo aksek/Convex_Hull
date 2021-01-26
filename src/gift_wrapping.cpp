@@ -8,8 +8,6 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
     std::list<Edge> E;
     std::vector<Triangle> F;
     std::vector<Triangle> Q;
-    data_converter c;
-    std::string cmd = "python3 ./src/visualize.py";
    
     Triangle first_face = find_one_face(points);
     Q.push_back(first_face);
@@ -50,8 +48,6 @@ std::vector<Triangle> gift_wrapping::solve(std::vector<Point> &points) {
             Q.push_back(new_face);
         }
         F.push_back(temp_face);
-        //c.save(points, F);
-        //::popen(cmd.c_str(), "r");
     }
 
     return F;
@@ -124,75 +120,6 @@ Triangle gift_wrapping::find_one_face(std::vector<Point> &points) {
             
         }
     }
-
-    // Vector normal0(0, -1, 0);
-    // Vector normal1(0, 0, 0);
-    // double biggest_angle = -1;
-    // double smallest_i_angle = 1;
-    // double i_angle = 0;
-
-    // for(unsigned i = 0; i < points.size(); ++i) {
-
-    //     Triangle first_face(second_point, first_point, i);
-    //     normal1 = first_face.normal(points);
-    //     angle = normal0.dot(normal1) / normal0.magnitude() / normal1.magnitude();
-    //     i_angle = (points[first_point] - points[i]).dot(points[second_point] - points[i]) / (points[first_point] - points[i]).magnitude() / (points[second_point] - points[i]).magnitude();
-
-    //     if(points[i].X() == -647 && points[i].Y() == -840 && points[i].Z() == 494) {
-
-    //         i = i;
-    //         ++i;
-    //         --i;
-    //     }
-
-    //     if(points[i].X() == -504 && points[i].Y() == -888 && points[i].Z() == 333) {
-
-    //         i = i;
-    //         ++i;
-    //         --i;
-    //     }
-
-    //     if(comparator::cmpfi(angle, biggest_angle, 0.0001f)) {
-
-    //         if(i_angle < smallest_i_angle) {
-
-    //             biggest_angle = angle;
-    //             third_point = i;
-    //             smallest_i_angle = i_angle;
-    //         }
-    //     } else if(angle > biggest_angle) {
-
-    //         biggest_angle = angle;
-    //         third_point = i;
-    //         smallest_i_angle = i_angle;
-    //     }
-    // }
-
-    // for(unsigned i = 0; i < points.size(); ++i) {
-
-    //     if(comparator::cmpfi(points[first_point].Y(), points[i].Y()) && points[second_point].X() < points[i].X() && i != first_point) {
-
-    //         second_point = i;
-    //     }
-        
-    //     if(points[second_point].Y() > points[i].Y() && i != first_point) {
-
-    //         second_point = i;
-    //     }
-    // }
-
-    // for(unsigned i = 0; i < points.size(); ++i) {
-
-    //     if(comparator::cmpfi(points[first_point].Y(), points[i].Y()) && points[third_point].X() < points[i].X() && i != first_point && i != second_point) {
-
-    //         third_point = i;
-    //     }
-        
-    //     if(points[third_point].Y() > points[i].Y() && i != first_point && i != second_point) {
-
-    //         third_point = i;
-    //     }
-    // }
 
     return Triangle(second_point, first_point, third_point);
 }
