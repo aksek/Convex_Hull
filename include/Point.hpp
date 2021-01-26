@@ -5,10 +5,6 @@
 
 #include<iostream>
 #include "comparator.hpp"
-// #include"Vector.hpp"
-// #include"Plane.hpp"
-
-
 
 class Vector;
 class Plane;
