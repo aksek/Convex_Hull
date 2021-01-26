@@ -20,10 +20,5 @@ public:
     ~Edge() = default;
     bool operator==(const Edge &that);
     Edge(const Edge &e) {start = e.start; direction = e.direction;} 
-    Edge& operator=(const Edge &e) {
-        
-        start = e.start;
-        direction = e.direction;
-        return *this;
-    }  
+    Edge& operator=(const Edge &e);
 };

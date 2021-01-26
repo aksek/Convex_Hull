@@ -3,7 +3,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include<iostream>
+#include <iostream>
 #include <math.h>
 #include "comparator.hpp"
 
@@ -24,15 +24,9 @@ public:
     double magnitude();
     double magnitude_x_y();
     Vector(const Vector &v) {x = v.x; y = v.y; z = v.z;} 
-    Vector& operator = (const Vector &v) {
-        
-        x = v.x;
-        y = v.y;
-        z = v.z;
-        return *this;
-    }
-
+    Vector& operator = (const Vector &v);
 };
 std::ostream &operator<<(std::ostream &os, const Vector &P);
+
 
 #endif //VECTOR_H

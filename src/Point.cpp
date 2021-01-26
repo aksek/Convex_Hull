@@ -42,11 +42,9 @@ bool Point::on_inner_side(Point A, Point B, Point C) const {
 }
 
 bool Point::under(Plane &plane) const {
-    // return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() < 0;
     return z < (-plane.A() * x - plane.B() * y - plane.D()) / plane.C();
 }
 bool Point::over(Plane &plane) const {
-    // return plane.A() * x + plane.B() * y + plane.C() * z + plane.D() > 0;
     return z > (-plane.A() * x - plane.B() * y - plane.D()) / plane.C();
 }
 bool Point::on(Plane &plane) const {
@@ -98,4 +96,10 @@ Point Point::operator+(const Vector &that) const {
     double y = this->y + that.Y();
     double z = this->z + that.Z();
     return Point(x, y, z);
+}
+Point& Point::operator= (const Point &p) { 
+    x = p.x;
+    y = p.y;
+    z = p.z;
+    return *this;
 }

@@ -50,3 +50,10 @@ double Vector::magnitude_x_y() {
     
     return sqrt(x * x + y * y);
 }
+
+Vector& Vector::operator= (const Vector &v) {  
+    x = v.x;
+    y = v.y;
+    z = v.z;
+    return *this;
+} 

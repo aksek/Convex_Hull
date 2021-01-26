@@ -83,14 +83,6 @@ vector<Triangle> Quickhull_solver::solve(vector<Point> &points) {
 
     convex_hull.init_conflict_graph(points);
 
-    // Vertex* current;
-    // for (int i = 0; i < points.size(); i++) {
-    //     // if (convex_hull.contains(it->first)) continue;
-
-    //     current = new Vertex(&points[i], i);
-    //     convex_hull.add_vertex(current, points);
-    // }
-
     double max_dist;
     int max_dist_index;
     Vertex* current;

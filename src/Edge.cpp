@@ -25,3 +25,10 @@ bool Edge::operator==(const Edge &that) {
     
     return (this->getStart() + this->getDirection()) == that.getStart() && (that.getStart() + that.getDirection()) == this->getStart();
 }
+
+Edge& Edge::operator=(const Edge &e) {
+        
+        start = e.start;
+        direction = e.direction;
+        return *this;
+    }  

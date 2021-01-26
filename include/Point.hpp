@@ -7,6 +7,9 @@
 #include "comparator.hpp"
 // #include"Vector.hpp"
 // #include"Plane.hpp"
+
+
+
 class Vector;
 class Plane;
 
@@ -32,13 +35,7 @@ public:
     Vector operator-(const Point &that) const;
     Point operator+(const Vector &that) const;
     Point(const Point &p) {x = p.x; y = p.y; z = p.z;}
-    Point& operator = (const Point &p) {
-        
-        x = p.x;
-        y = p.y;
-        z = p.z;
-        return *this;
-    }
+    Point& operator = (const Point &p);
 };
 std::ostream &operator<<(std::ostream &os, const Point &P);
 
