@@ -4,6 +4,7 @@
 #define POINT_H
 
 #include<iostream>
+#include "comparator.hpp"
 // #include"Vector.hpp"
 // #include"Plane.hpp"
 class Vector;

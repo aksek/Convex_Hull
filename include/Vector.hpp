@@ -5,6 +5,7 @@
 
 #include<iostream>
 #include <math.h>
+#include "comparator.hpp"
 
 class Vector{
 private:
@@ -18,8 +19,10 @@ public:
     bool operator==(const Vector &that) const;
     Vector operator*(const Vector &that) const;     //cross product
     double dot(const Vector &that) const;        //dot product
+    double dot_x_y(const Vector &that) const; 
     double length();
     double magnitude();
+    double magnitude_x_y();
     Vector(const Vector &v) {x = v.x; y = v.y; z = v.z;} 
     Vector& operator = (const Vector &v) {
         
@@ -27,7 +30,8 @@ public:
         y = v.y;
         z = v.z;
         return *this;
-    }  
+    }
+
 };
 std::ostream &operator<<(std::ostream &os, const Vector &P);
 

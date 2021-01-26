@@ -23,11 +23,18 @@ double Vector::dot(const Vector &that) const {
     double w = this->z * that.Z();
     return u + v + w;
 }
+
+double Vector::dot_x_y(const Vector &that) const {
+    double u = this->x * that.X();
+    double v = this->y * that.Y();
+    return u + v;
+}
+
 double Vector::length() {
     return sqrt(x * x + y * y + z * z);
 }
 bool Vector::operator==(const Vector &that) const {
-    if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
+    if (!comparator::cmpfi(x, that.X()) || !comparator::cmpfi(y, that.Y()) || !comparator::cmpfi(z, that.Z()) ) return false;
     else return true;
 }
 std::ostream &operator<<(std::ostream &os, const Vector &V) {
@@ -35,8 +42,11 @@ std::ostream &operator<<(std::ostream &os, const Vector &V) {
 }
 
 double Vector::magnitude() {
-
-    double temp = pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2);
     
-    return sqrt(temp);
+    return sqrt(x * x + y * y + z * z);
+}
+
+double Vector::magnitude_x_y() {
+    
+    return sqrt(x * x + y * y);
 }

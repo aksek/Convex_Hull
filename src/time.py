@@ -4,6 +4,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
+import math 
 
 df = pd.read_csv('./data/time_data.txt')
 
@@ -14,14 +15,14 @@ trace1 = go.Scatter(
     	showlegend = True
 	)
 	
-# trace2 = go.Scatter(
+trace2 = go.Scatter(
 	
-# 	x=df.x, y = 0.126451 * df.x - 86.330999,
-#     	name = 'regression',
-#     	showlegend = True
-# 	)
+	x=df.x, y = 0.00046 * df.x ** 2,
+    	name = 'regression',
+    	showlegend = True
+	)
 	
-data = [trace1]
+data = [trace1, trace2]
 
 layout = go.Layout(
 	title= dict(

@@ -59,7 +59,7 @@ bool Point::over(double A, double B, double C) const {     // line
     return y > (- A * x - C) / B;
 }
 bool Point::operator==(const Point &that) const {
-    if (this->x != that.X() || this->y != that.Y() || this->z != that.Z() ) return false;
+    if (!comparator::cmpfi(x, that.X()) || !comparator::cmpfi(y, that.Y()) || !comparator::cmpfi(z, that.Z()) ) return false;
     else return true;
 }
 bool Point::inside(Point *A, Point *B, Point *C, Plane &plane) const {

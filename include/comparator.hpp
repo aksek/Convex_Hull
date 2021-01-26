@@ -7,5 +7,5 @@
 class comparator {
 
 public:
-    static bool cmpfi(float A, float B, float epsilon = 0.0001f);
+    static bool cmpfi(float A, float B, float epsilon = 0.000001f);
 };
